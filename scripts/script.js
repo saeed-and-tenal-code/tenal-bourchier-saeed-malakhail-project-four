@@ -1,45 +1,49 @@
 // (3) namespace object
 const cityApp = {};
 
-// AJAX function 
-cityApp.getCityInfo = function (cityName) {
-// a method that accepts one argument (users city), then calls the API and API returns object containing city scores
-// call display function within .then()
-    return $.ajax({
-            url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
-            method: `GET`,
-            dataType: `json`
-        })
-            // .then((result) => {
-            //     console.log('your ajax request worked:', result);
-            // });
-}
 
+
+// (4) declaring global variables & caching selectors
 const citiesArray = [];
 
 
-cityApp.formSubmitErrorHandling = function () {
-// ensure fields are filled out correctly: 
-// (a) input cannot be equal to an empty string
-// (c) cities can not be equal to each other
-// IF only one value (city) is provided by user OR the values are equal to each other
-// ELSE call the AJAX function (inputting the variables with users values stored within them)
 
-    $('.results-list-city-one').empty();
-    $('.results-list-city-two').empty();
+// (5) form submit event listener (a method that prevents the default form behaviour & calls the error handling function when the user submits the form)
+cityApp.formSubmitEvenListener = () => {
+
+    // on form submit store the user's inputted values into variables
+    $('form').on('submit', function (event) {
+        event.preventDefault();
+
+        cityApp.formSubmitErrorHandling();
+
+    })
+}
+
+
+
+// (6) error handling (a method that ensures the user a) hasn't submitted an empty input field, b) has inputted two different cities, and c) the inputted city is available in the API)
+cityApp.formSubmitErrorHandling = function () {
+    // store the user's input values in variables
     const userCityOne = $('#city-one').val();
     const userCityTwo = $('#city-two').val();
+
+    // a conditional that:
+    // (a) alerts user if input is equal to an empty string
+    // (b) alerts user if the inputs are equal to each other
+    // (c) otherwise, calls the AJAX function (passing the above variables as arguments)
     if (userCityOne === '' || userCityTwo === '') {
-        alert('Please ensure to enter a city name!');
+        alert('Please ensure you enter a city name!');
     }
     else if (userCityOne === userCityTwo) {
-        alert('Please ensure to enter two different cities!');
+        alert('Please ensure you enter two different cities!');
     }
     else {
         citiesArray.push(cityApp.getCityInfo(userCityOne));
         citiesArray.push(cityApp.getCityInfo(userCityTwo));
         // console.log("citiesArray", citiesArray);
     }
+
 
     if (citiesArray.length > 2) {
         citiesArray.shift();
@@ -56,9 +60,9 @@ cityApp.formSubmitErrorHandling = function () {
                 cityApp.displayCityInfo(item, i);
             })
 
-            //in case one or more promises resolves unsuccessfully
+            // in case one or more promises resolve unsuccessfully
             .fail(function (noItem) {
-                if (i === 0) 
+                if (i === 0)
                     alert(`Sorry, the city: ${userCityOne} does not exist, Please Enter Again!`);
                 else
                     alert(`Sorry, the city: ${userCityTwo} does not exist, Please Enter Again!`);
@@ -67,102 +71,59 @@ cityApp.formSubmitErrorHandling = function () {
 }
 
 
-// (7) error handling 2.0
-cityApp.apiErrorHandling = () => {
-    // city must be a valid city (.catch() / .fail())
-    // if value (city) is invalid, THEN alert the user
-}
 
 
-// (4) form submit event listener (a method that prevents the default form behaviour & calls the error handling function when the user submits the form)
-cityApp.formSubmitEvenListener = () => {
+// (7) AJAX function (a method that accepts one parameter (users city), then calls the API which returns an object containing city scores)
+cityApp.getCityInfo = function (cityName) {
 
-    // on form submit store the user's inputted values into variables
-    $('form').on('submit', function (event) {
-        event.preventDefault();
+    return $.ajax({
+            url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
+            method: `GET`,
+            dataType: `json`
+        })
 
-        cityApp.formSubmitErrorHandling();
-        
-    }) 
-}
-
-
-// (5) error handling function
-// cityApp.formSubmitErrorHandling = () => {
-//     // ensure fields are filled out correctly: 
-//     // (a) input cannot be equal to an empty string
-//     // (c) cities can not be equal to each other
-//     // IF only one value (city) is provided by user OR the values are equal to each other
-//     // ELSE call the AJAX function (inputting the variables with users values stored within them)
-//     // call scroll function
-//     const userCityOne = $('#city-one').val();
-//     const userCityTwo = $('#city-two').val();
-//     if (userCityOne === '' || userCityTwo === '') {
-//         alert('Please ensure to enter a city name!');
-//     }
-//     else if (userCityOne === userCityTwo) {
-//         alert('Please ensure to enter two different cities!');
-//     } 
-//     else {
-//         cityApp.getCityInfo(userCityOne);
-//         cityApp.getCityInfo(userCityTwo);
-//     }
-// }
-
-
-
-// (6) AJAX function (a method that accepts one parameter (users city), then calls the API which returns an object containing city scores)
-cityApp.getCityInfo = (cityName) => {
-
-    $.ajax({
-        url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
-        method: `GET`,
-        dataType: `json`
-    })
-    
     // call display function within .then()
-        .then((result) => {
-            console.log('your ajax request worked:', result);
-            cityApp.displayCityInfo(result);
-        });
+        // .then((result) => {
+        //     console.log('your ajax request worked:', result);
+        // });
 }
 
 
 
-// PROMISE/ERROR HANDLING FOR CITY
-cityApp.checkForCity = new Promise( (callAjax, alert) => {
-    if (parameterHere) {
-        cityApp.getCityInfo();
-        // how to pass parameters in here?
-    } else {
-        alert(`Sorry, looks like this city isn't in our database yet!`);
-        // how does the user know WHICH city isn't searchable?
-    }
-});
+
+// AJAX FUNCTION (old)
+    // cityApp.getCityInfo = (cityName) => {
+    //     $.ajax({
+    //         url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
+    //         method: `GET`,
+    //         dataType: `json`
+    //     })
+    //     // call display function within .then()
+    //         .then((result) => {
+    //             console.log('your ajax request worked:', result);
+    //             cityApp.displayCityInfo(result);
+    //         });
+    // }
+
+// API ERROR HANDLING (OLD)
+    // cityApp.apiErrorHandling = () => {
+    //     // city must be a valid city (.catch() / .fail())
+    //     // if value (city) is invalid, THEN alert the user
+    // }
+
+// AJAX PROMISE (OLD)
+    // cityApp.getCityPromise = (userCity) => {
+    //     const citiesArray = [];
+    //     for (let n = 1; n <= 2; n++) {
+    //         citiesArray.push(cityApp.getCityInfo(userCity));
+    //     }
+    //     $.when(...citiesArray)
+    //         .then((...successfullyReturnedCity) => {
+    //             console.log(successfullyReturnedCity)
+    //         })
+    // }
 
 
-
-// AJAX PROMISE function
-// cityApp.getCityPromise = (userCity) => {
-//     const citiesArray = [];
-
-//     for (let n = 1; n <= 2; n++) {
-//         citiesArray.push(cityApp.getCityInfo(userCity));
-//     }
-
-//     $.when(...citiesArray)
-//         .then((...successfullyReturnedCity) => {
-//             console.log(successfullyReturnedCity)
-//         })
-// }
-
-
-
-// (7) api error handling (a method that ensures the user's inputted city is available in the API)
-cityApp.apiErrorHandling = () => {
-    // city must be a valid city (.catch() / .fail())
-    // if value (city) is invalid, THEN alert the user
-}
 
 
 
@@ -171,10 +132,11 @@ cityApp.totalScores = () => {
     // display final total scores on page
 }
 
-// (9) display function 
+
+
+
+// (9) display (a method that accepts one parameter (user's city object) and displays the city name, image, scores, icons, and category labels on the user's screen)
 cityApp.displayCityInfo = (cityObject, cityCount) => {
-    // a method that accepts one argument (users city object) and displays information on the users screen
-    // data to be displayed includes the city name, city image, and city scores (between 10 - 15) with associated icons, and score/category label
 
     const cityScoresArray = cityObject.categories;
 
@@ -184,28 +146,45 @@ cityApp.displayCityInfo = (cityObject, cityCount) => {
 
         if (cityCount === 0) {
             $('.results-list-city-one').append(`<li>${cityScore.name}: ${scoreValueFinal}</li>`); }
+
         else if (cityCount === 1) {
             $('.results-list-city-two').append(`<li>${cityScore.name}: ${scoreValueFinal}</li>`);}
 
         // console.log('name of score:', cityScore.name);
         // console.log('score rating:', cityScore.score_out_of_10);
     });
+
+    // append 'choose different cities' button
+    const chooseDifferentCities = $('<button>').text('Choose Different Cities');
+    $('#choose-different-cities').append(chooseDifferentCities);
 }
 
 
 
-// (10) scroll function
+// (10) scroll function (a method to automatically bring users to results)
 cityApp.scrollToResults = () => {
-    // a method to automatically bring users to results
+    $('html').animate({
+        scrollTop: $('#results').offset().top
+    }, 1000);
 }
 
 
 
-// (11) reset function
-cityApp.searchAgain = () => {
-    // listen for when the user clicks the 'search again' button, when clicked:
-        // (a) remove all appended information
-        // (b) scroll to top of page to allow users to input new values (cities)
+// (11) reset function (a method that removes appended content, scrolls to the top of the page,  allows suers to search again)
+cityApp.chooseDifferentCities = () => {
+
+    // listen for when the user clicks the 'compare different cities' button, when clicked:
+    $('#choose-different-cities').on('click', function () {
+
+        // remove all appended content
+        $('#results-list-category-titles').empty();
+        $('#results-list-city-one').empty();
+        $('#results-list-city-two').empty();
+
+        // scroll to top of page to allow users to input new values (cities)
+        // call scroll function here
+    });
+
 }
 
 
@@ -242,17 +221,3 @@ $(function () {
     // (2) give the user an option to 'save' one of the cities and enter a second new city to compare it to
     // (3) allow users to compare up to 3 cities (minimum of 2 cities, maximum of 3 cities)
     // (4) allow the user to assign different 'importance levels' to categories of their own choice
-
-
-
-// (2) init function
-
-cityApp.init = () => {
-
-    cityApp.formSubmitEvenListener();
-}
-
-// (1) document ready function
-$(function () {
-    cityApp.init();
-});
