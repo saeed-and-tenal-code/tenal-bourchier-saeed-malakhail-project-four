@@ -15,6 +15,9 @@ cityApp.formSubmitEvenListener = () => {
     $('form').on('submit', function (event) {
         event.preventDefault();
 
+        // ensure cities array is empty & any appended results are cleared
+        cityApp.chooseDifferentCities();
+
         cityApp.formSubmitErrorHandling();
 
     })
@@ -23,7 +26,7 @@ cityApp.formSubmitEvenListener = () => {
 
 
 // (6) error handling (a method that ensures the user a) hasn't submitted an empty input field, b) has inputted two different cities, and c) the inputted city is available in the API)
-cityApp.formSubmitErrorHandling = function () {
+cityApp.formSubmitErrorHandling = () => {
     // store the user's input values in variables
     const userCityOne = $('#city-one').val();
     const userCityTwo = $('#city-two').val();
@@ -31,7 +34,7 @@ cityApp.formSubmitErrorHandling = function () {
     // a conditional that:
     // (a) alerts user if input is equal to an empty string
     // (b) alerts user if the inputs are equal to each other
-    // (c) otherwise, calls the AJAX function (passing the above variables as arguments)
+    // (c) otherwise, calls the AJAX function (passing the above variables in as arguments)
     if (userCityOne === '' || userCityTwo === '') {
         alert('Please ensure you enter a city name!');
     }
@@ -44,29 +47,38 @@ cityApp.formSubmitErrorHandling = function () {
         // console.log("citiesArray", citiesArray);
     }
 
+    // REVIEW: THIS NEEDS TO BE CHANGED --- if the user attempts to search for a second city without pressing the 'choose different cities' button, then ensure
+        // if (citiesArray.length > 2) {
+        //     citiesArray.shift();
+        //     citiesArray.shift();
+        // }
 
-    if (citiesArray.length > 2) {
-        citiesArray.shift();
-        citiesArray.shift();
-    }
-
+    // after the AJAX call, check to see if both cities are returned successfully (ie: ensure the cities are available in the API), then display the city information. If one or both of the cities are nto returned successfully, then alert the user & do not display any city information
     for (let i = 0; i < citiesArray.length; i++) {
 
         $.when(citiesArray[i])
 
             .then(function (item) {
-
-                console.log(item.categories);
-                cityApp.displayCityInfo(item, i);
+                console.log('item:', item);
+                console.log('cities array', citiesArray);
+                if (citiesArray[0].statusText === 'OK' && citiesArray[1].statusText === 'OK') {
+                    cityApp.displayCityInfo(item, 0);
+                    cityApp.displayCityInfo(item, 1);
+                    console.log(item.categories);
+                }
             })
 
-            // in case one or more promises resolve unsuccessfully
-            .fail(function (noItem) {
-                if (i === 0)
+            // alert the user if one or more promises resolve unsuccessfully (ie: if their inputted city is not available in the API)
+            .fail(function () {
+                if (i === 0) {
                     alert(`Sorry, the city: ${userCityOne} does not exist, Please Enter Again!`);
-                else
+                    cityApp.reset();
+                }
+                else {
                     alert(`Sorry, the city: ${userCityTwo} does not exist, Please Enter Again!`);
-            })
+                    cityApp.reset();
+                }
+            });
     }
 }
 
@@ -138,25 +150,37 @@ cityApp.totalScores = () => {
 // (9) display (a method that accepts one parameter (user's city object) and displays the city name, image, scores, icons, and category labels on the user's screen)
 cityApp.displayCityInfo = (cityObject, cityCount) => {
 
+    // clear previously appended information
+    // cityApp.reset();
+
     const cityScoresArray = cityObject.categories;
 
     cityScoresArray.map((cityScore) => {
+        // round the score values to 2 decimal places
         const scoreValueRaw = cityScore.score_out_of_10;
         const scoreValueFinal = scoreValueRaw.toFixed(2);
 
+        // a conditional that appends scores for city 1 and city 2 in separate lists
         if (cityCount === 0) {
-            $('.results-list-city-one').append(`<li>${cityScore.name}: ${scoreValueFinal}</li>`); }
-
+            $('#results-list-city-one').append(`<li>${scoreValueFinal}</li>`); 
+            $('#results-list-category-titles').append(`<li>${cityScore.name}</li>`);
+        }
         else if (cityCount === 1) {
-            $('.results-list-city-two').append(`<li>${cityScore.name}: ${scoreValueFinal}</li>`);}
-
+            $('#results-list-city-two').append(`<li>${scoreValueFinal}</li>`);
+        } 
+        // else if (cityCount > 2) {
+        //     cityApp.reset();
+        // }
+        
         // console.log('name of score:', cityScore.name);
         // console.log('score rating:', cityScore.score_out_of_10);
     });
-
-    // append 'choose different cities' button
-    const chooseDifferentCities = $('<button>').text('Choose Different Cities');
-    $('#choose-different-cities').append(chooseDifferentCities);
+    
+    if (cityCount === 0) {
+        // append 'choose different cities' button
+        const chooseDifferentCities = $('<button>').text('Choose Different Cities');
+        $('#choose-different-cities').html(chooseDifferentCities);
+    }
 }
 
 
@@ -170,21 +194,35 @@ cityApp.scrollToResults = () => {
 
 
 
-// (11) reset function (a method that removes appended content, scrolls to the top of the page,  allows suers to search again)
+// (11) choose different cities (a method that removes appended content, scrolls to the top of the page,  allows suers to search again)
 cityApp.chooseDifferentCities = () => {
 
     // listen for when the user clicks the 'compare different cities' button, when clicked:
     $('#choose-different-cities').on('click', function () {
 
-        // remove all appended content
-        $('#results-list-category-titles').empty();
-        $('#results-list-city-one').empty();
-        $('#results-list-city-two').empty();
+        // clear cities array and appended content
+        cityApp.reset();
+
+        // remove button from
+        $('#choose-different-cities').empty();
 
         // scroll to top of page to allow users to input new values (cities)
-        // call scroll function here
+            // call scroll function here
     });
 
+}
+
+
+
+// reset function
+cityApp.reset = () => {
+    // remove all appended content
+    $('#results-list-category-titles').empty();
+    $('#results-list-city-one').empty();
+    $('#results-list-city-two').empty();
+
+    // empty the cities array
+    citiesArray.length = 0;
 }
 
 
