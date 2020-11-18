@@ -3,17 +3,68 @@
 const cityApp = {};
 
 // AJAX function 
-cityApp.getCityInfo = (cityName) => {
+cityApp.getCityInfo = function (cityName) {
 // a method that accepts one argument (users city), then calls the API and API returns object containing city scores
 // call display function within .then()
-    $.ajax({
-        url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
-        method: `GET`,
-        dataType: `json`
-    })
-        .then((result) => {
-            console.log('your ajax request worked:', result);
-        });
+    return $.ajax({
+            url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
+            method: `GET`,
+            dataType: `json`
+        })
+            // .then((result) => {
+            //     console.log('your ajax request worked:', result);
+            // });
+}
+
+const citiesArray = [];
+
+
+cityApp.formSubmitErrorHandling = function () {
+// ensure fields are filled out correctly: 
+// (a) input cannot be equal to an empty string
+// (c) cities can not be equal to each other
+// IF only one value (city) is provided by user OR the values are equal to each other
+// ELSE call the AJAX function (inputting the variables with users values stored within them)
+
+    $('.results-list-city-one').empty();
+    $('.results-list-city-two').empty();
+    const userCityOne = $('#city-one').val();
+    const userCityTwo = $('#city-two').val();
+    if (userCityOne === '' || userCityTwo === '') {
+        alert('Please ensure to enter a city name!');
+    }
+    else if (userCityOne === userCityTwo) {
+        alert('Please ensure to enter two different cities!');
+    }
+    else {
+        citiesArray.push(cityApp.getCityInfo(userCityOne));
+        citiesArray.push(cityApp.getCityInfo(userCityTwo));
+        // console.log("citiesArray", citiesArray);
+    }
+
+    if (citiesArray.length > 2) {
+        citiesArray.shift();
+        citiesArray.shift();
+    }
+
+    for (let i = 0; i < citiesArray.length; i++) {
+
+        $.when(citiesArray[i])
+
+            .then(function (item) {
+
+                console.log(item.categories);
+                cityApp.displayCityInfo(item, i);
+            })
+
+            //in case one or more promises resolves unsuccessfully
+            .fail(function (noItem) {
+                if (i === 0) 
+                    alert(`Sorry, the city: ${userCityOne} does not exist, Please Enter Again!`);
+                else
+                    alert(`Sorry, the city: ${userCityTwo} does not exist, Please Enter Again!`);
+            })
+    }
 }
 
 
@@ -26,37 +77,38 @@ cityApp.apiErrorHandling = () => {
 
 // (4) event listener function
 cityApp.formSubmitEvenListener = () => {
+
     // on form submit store the user's inputted values into variables
     $('form').on('submit', function (event) {
         event.preventDefault();
 
         cityApp.formSubmitErrorHandling();
+        
     }) 
 }
 
 
 // (5) error handling function
-cityApp.formSubmitErrorHandling = () => {
-    // ensure fields are filled out correctly: 
-    // (a) input cannot be equal to an empty string
-    // (c) cities can not be equal to each other
-    // IF only one value (city) is provided by user OR the values are equal to each other
-    // ELSE call the AJAX function (inputting the variables with users values stored within them)
-    // call scroll function
-    const userCityOne = $('#city-one').val();
-    const userCityTwo = $('#city-two').val();
-    if (userCityOne === '' || userCityTwo === '') {
-        alert('Please ensure to enter a city name!');
-    }
-    else if (userCityOne === userCityTwo) {
-        alert('Please ensure to enter two different cities!');
-    } 
-    else {
-        cityApp.getCityInfo(userCityOne);
-        cityApp.getCityInfo(userCityTwo);
-    }
-}
-console.log(cityApp.formSubmitErrorHandling());
+// cityApp.formSubmitErrorHandling = () => {
+//     // ensure fields are filled out correctly: 
+//     // (a) input cannot be equal to an empty string
+//     // (c) cities can not be equal to each other
+//     // IF only one value (city) is provided by user OR the values are equal to each other
+//     // ELSE call the AJAX function (inputting the variables with users values stored within them)
+//     // call scroll function
+//     const userCityOne = $('#city-one').val();
+//     const userCityTwo = $('#city-two').val();
+//     if (userCityOne === '' || userCityTwo === '') {
+//         alert('Please ensure to enter a city name!');
+//     }
+//     else if (userCityOne === userCityTwo) {
+//         alert('Please ensure to enter two different cities!');
+//     } 
+//     else {
+//         cityApp.getCityInfo(userCityOne);
+//         cityApp.getCityInfo(userCityTwo);
+//     }
+// }
 
 // (8) total score function
 cityApp.totalScores = () => {
@@ -65,9 +117,24 @@ cityApp.totalScores = () => {
 }
 
 // (9) display function 
-cityApp.displayCityInfo = () => {
+cityApp.displayCityInfo = (cityObject, cityCount) => {
     // a method that accepts one argument (users city object) and displays information on the users screen
     // data to be displayed includes the city name, city image, and city scores (between 10 - 15) with associated icons, and score/category label
+
+    const cityScoresArray = cityObject.categories;
+
+    cityScoresArray.map((cityScore) => {
+        const scoreValueRaw = cityScore.score_out_of_10;
+        const scoreValueFinal = scoreValueRaw.toFixed(2);
+
+        if (cityCount === 0) {
+            $('.results-list-city-one').append(`<li>${cityScore.name}: ${scoreValueFinal}</li>`); }
+        else if (cityCount === 1) {
+            $('.results-list-city-two').append(`<li>${cityScore.name}: ${scoreValueFinal}</li>`);}
+
+        // console.log('name of score:', cityScore.name);
+        // console.log('score rating:', cityScore.score_out_of_10);
+    });
 }
 
 // (10) scroll function
@@ -101,6 +168,7 @@ cityApp.searchAgain = () => {
 // (2) init function
 
 cityApp.init = () => {
+
     cityApp.formSubmitEvenListener();
 }
 
