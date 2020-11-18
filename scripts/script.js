@@ -3,10 +3,9 @@
 const cityApp = {};
 
 // AJAX function 
+cityApp.getCityInfo = (cityName) => {
 // a method that accepts one argument (users city), then calls the API and API returns object containing city scores
 // call display function within .then()
-
-cityApp.getCityInfo = (cityName) => {
     $.ajax({
         url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
         method: `GET`,
@@ -28,19 +27,36 @@ cityApp.apiErrorHandling = () => {
 // (4) event listener function
 cityApp.formSubmitEvenListener = () => {
     // on form submit store the user's inputted values into variables
+    $('form').on('submit', function (event) {
+        event.preventDefault();
+
+        cityApp.formSubmitErrorHandling();
+    }) 
 }
 
 
 // (5) error handling function
 cityApp.formSubmitErrorHandling = () => {
     // ensure fields are filled out correctly: 
-        // (a) input cannot be equal to an empty string
-        // (c) cities can not be equal to each other
-        // IF only one value (city) is provided by user OR the values are equal to each other
-        // ELSE call the AJAX function (inputting the variables with users values stored within them)
-        // call scroll function
+    // (a) input cannot be equal to an empty string
+    // (c) cities can not be equal to each other
+    // IF only one value (city) is provided by user OR the values are equal to each other
+    // ELSE call the AJAX function (inputting the variables with users values stored within them)
+    // call scroll function
+    const userCityOne = $('#city-one').val();
+    const userCityTwo = $('#city-two').val();
+    if (userCityOne === '' || userCityTwo === '') {
+        alert('Please ensure to enter a city name!');
+    }
+    else if (userCityOne === userCityTwo) {
+        alert('Please ensure to enter two different cities!');
+    } 
+    else {
+        cityApp.getCityInfo(userCityOne);
+        cityApp.getCityInfo(userCityTwo);
+    }
 }
-
+console.log(cityApp.formSubmitErrorHandling());
 
 // (8) total score function
 cityApp.totalScores = () => {
@@ -85,7 +101,7 @@ cityApp.searchAgain = () => {
 // (2) init function
 
 cityApp.init = () => {
-    cityApp.getCityInfo(`toronto`);
+    cityApp.formSubmitEvenListener();
 }
 
 // (1) document ready function
