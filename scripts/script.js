@@ -60,6 +60,19 @@ cityApp.getCityInfo = (cityName) => {
 
 
 
+// PROMISE/ERROR HANDLING FOR CITY
+cityApp.checkForCity = new Promise( (callAjax, alert) => {
+    if (parameterHere) {
+        cityApp.getCityInfo();
+        // how to pass parameters in here?
+    } else {
+        alert(`Sorry, looks like this city isn't in our database yet!`);
+        // how does the user know WHICH city isn't searchable?
+    }
+});
+
+
+
 // AJAX PROMISE function
 // cityApp.getCityPromise = (userCity) => {
 //     const citiesArray = [];
