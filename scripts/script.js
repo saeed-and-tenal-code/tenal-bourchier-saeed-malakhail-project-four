@@ -4,7 +4,7 @@ const cityApp = {};
 
 
 // (4) declaring global variables & caching selectors
-const citiesArray = [];
+
 
 
 
@@ -14,10 +14,9 @@ cityApp.formSubmitEvenListener = () => {
     // on form submit store the user's inputted values into variables
     $('form').on('submit', function (event) {
         event.preventDefault();
-
+        
+        // empty appended results
         cityApp.reset();
-        // ensure cities array is empty & any appended results are cleared
-        cityApp.chooseDifferentCities();
 
         // store the user's input values in variables
         const userCityOne = $('#city-one').val();
@@ -32,13 +31,6 @@ cityApp.formSubmitEvenListener = () => {
         else if (userCityOne === userCityTwo) {
             alert('Please ensure you enter two different cities!');
         }
-        // // (c) otherwise, calls the AJAX function (passing the above variables in as arguments)
-        // else {
-        //     cityApp.reset();
-        //     citiesArray.push(cityApp.getCityInfo(userCityOne));
-        //     citiesArray.push(cityApp.getCityInfo(userCityTwo));
-        //     // console.log("citiesArray", citiesArray);
-        // }
 
         cityApp.formSubmitErrorHandling(userCityOne, 0);
         cityApp.formSubmitErrorHandling(userCityTwo, 1);
@@ -47,87 +39,30 @@ cityApp.formSubmitEvenListener = () => {
 }
 
 
-
 // (6) error handling (a method that ensures the user a) hasn't submitted an empty input field, b) has inputted two different cities, and c) the inputted city is available in the API)
 cityApp.formSubmitErrorHandling = (userCity, index) => {
 
-
-
     // after the AJAX call, check to see if both cities are returned successfully (ie: ensure the cities are available in the API) 
-    // for (let i = 0; i < citiesArray.length; i++) {
-
     $.when(cityApp.getCityInfo(userCity))
             // if they both return successfully, then display the city information
             .then(function (item) {
 
-                // console.log(item);
-                // console.log(item[0][0].categories);
-                // console.log(item[1]['1']);
-                // console.log(item);
+                cityApp.displayCityInfo(item, index);
 
-                // for (let i = 0; i < item.length; i++) {
-                    cityApp.displayCityInfo(item, index);
-                // }
-
-
-                
-                
-                // console.log('cities array 0 element', citiesArray);
-                // if (citiesArray[0].statusText === 'OK' && citiesArray[1].statusText === 'OK') {
-                    // cityApp.reset();
-                    // const cityObject = item.map(city => {
-                    //     return city[0];
-                    // });
-                    // console.log(cityObject);
-
-                    // cityApp.displayCityInfo(cityObject[0],0);
-                    // cityApp.displayCityInfo(cityObject[1],1);
-                    // console.log(item);
-                // }
             })
 
             // if one or both of the cities are not returned successfully (ie: if user's inputted city is not available in the API), then alert the user & do not display any city information
             .fail(function (item) { 
                 // console.log(item);
 
+                // Alert the user 
                 console.log(userCity);
 
                 cityApp.reset();
-
-                // if (item[0]['1'] !== 'error') {
-                //     alert(`Sorry, the city: ${userCityOne} does not exist, Please Enter Again!`);
-                // }
-                // else if (item[1]['1'] !== 'error') {
-                //     alert(`Sorry, the city: ${userCityTwo} does not exist, Please Enter Again!`);
-                // }
-
-                // if (item[0]['1'] === "error" && item[1]['1'] === "error") {
-                //     alert(`Sorry, the city: ${userCityOne} & ${userCityTwo} do not exist, Please Enter Again!`);
-                // }
-                // else if (item[0]['1'] === "error") {
-                //     alert(`Sorry, the city: ${userCityOne} does not exist, Please Enter Again!`);
-                // }
-                // else if (item[1]['1']) {
-                //     alert(`Sorry, the city: ${userCityTwo} does not exist, Please Enter Again!`);
-                // }
-
-                // alert(item[0].responseJSON['message']);
-                
-                    // if (item.statusText === "Not Found"){
-                    //     alert(`Sorry, the city: ${userCityOne} does not exist, Please Enter Again!`);
-                    //     cityApp.reset();
-                    // }
-                    // else if (item[2] === "Not Found") {
-                    //     alert(`Sorry, the city: ${userCityTwo} does not exist, Please Enter Again!`);
-                    //     cityApp.reset();
-                    // }
-                
-                // console.log(cityObject);
                 
             });
     // }
 }
-
 
 
 
@@ -140,18 +75,6 @@ cityApp.getCityInfo = function (cityName) {
             dataType: `json`
         })
 }
-
-
-
-
-
-// (8) total score (a method that adds up the individual category scores and calculates a 'final score' for both cities)
-// cityApp.totalScores = () => {
-//     // display final total scores on page
-
-// }
-
-
 
 
 // (9) display (a method that accepts one parameter (user's city object) and displays the city name, image, scores, icons, and category labels on the user's screen)
@@ -187,14 +110,12 @@ cityApp.displayCityInfo = (cityObject, i) => {
 }
 
 
-
 // (10) scroll function (a method to automatically bring users to results)
 cityApp.scrollToResults = () => {
     $('html').animate({
         scrollTop: $('#results').offset().top
     }, 1000);
 }
-
 
 
 // (11) choose different cities (a method that removes appended content, scrolls to the top of the page,  allows suers to search again)
@@ -216,7 +137,6 @@ cityApp.chooseDifferentCities = () => {
 }
 
 
-
 // reset function
 cityApp.reset = () => {
     // remove all appended content
@@ -225,9 +145,6 @@ cityApp.reset = () => {
     $('#results-list-city-two').empty();
     $('#total-score-city-one').empty();
     $('#total-score-city-two').empty();
-
-    // empty the cities array
-    citiesArray.length = 0;
 }
 
 
