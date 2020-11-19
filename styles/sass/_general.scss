@@ -1,0 +1,59 @@
+// COLOUR VARIABLES ----------
+    // $primary-colour: #ABC5D2;
+    // $secondary-colour: #7397AF;
+    // $option: #e9bd5f;
+    // $option-active: #DA972F;
+    // $font-colour: #000000;
+
+
+// FONT VARIABLES ----------
+    // $heading-font: 'Domine', serif;
+    // $body-font: 'Roboto', sans-serif;
+
+
+// GLOBAL STYLING ----------
+*,
+p, 
+h1,
+h2, 
+h3,
+a,
+button,
+form {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background-color: white;
+}
+
+body, html { 
+    overflow-x:hidden; 
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+}
+
+img {
+	max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.wrapper {
+    max-width: 1280px;
+    width: 85%;
+    margin: 0 auto;
+}

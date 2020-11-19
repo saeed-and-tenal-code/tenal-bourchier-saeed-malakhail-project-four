@@ -8,22 +8,29 @@
     <!-- Google fonts link here -->
     <!-- Icon link here -->
 </head>
+
 <body>
-    
+    <!-- header starts here -->
     <header>
-        <h1>PROJECT 4</h1>
+        <div class="wrapper header-container">
+            <h1>Project 4 title here</h1>
+            <div class="form-container">
+                <p>Interested in moving? Compare the quality of life between major international cities!</p>
+                <!-- form starts here -->
+                <form action="">
+                    <div class="inputs-container">
+                        <label for="city-one" class="sr-only">Enter your first city here</label>
+                        <input type="text" id="city-one" name="city-one" placeholder="Enter first city..." required>
+                        <label for="city-two" class="sr-only">Enter your second city here</label>
+                        <input type="text" id="city-two" name="city-two" placeholder="Enter second city..." required>
+                    </div>
+                    <button class="" type="submit">Compare</button>
+                </form>
+            </div>
+        </div>
     </header>
 
     <main>
-        <form action="">
-            <label for="city-one">City 1</label>
-            <p class="sr-only">Enter Your First City Here</p>
-            <input type="text" id="city-one" name="city-one">
-            <label for="city-two">City 2</label>
-            <p class="sr-only">Enter Your Second City Here</p>
-            <input type="text" id="city-two" name="city-two">
-            <button class="" type="submit">Compare</button>
-        </form>
 
         <section id="results">
             <div>
