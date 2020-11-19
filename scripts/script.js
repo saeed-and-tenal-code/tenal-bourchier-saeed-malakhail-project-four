@@ -31,44 +31,41 @@ cityApp.formSubmitErrorHandling = () => {
     const userCityOne = $('#city-one').val();
     const userCityTwo = $('#city-two').val();
 
+
     // a conditional that:
     // (a) alerts user if input is equal to an empty string
-    // (b) alerts user if the inputs are equal to each other
-    // (c) otherwise, calls the AJAX function (passing the above variables in as arguments)
     if (userCityOne === '' || userCityTwo === '') {
         alert('Please ensure you enter a city name!');
     }
+    // (b) alerts user if the inputs are equal to each other
     else if (userCityOne === userCityTwo) {
         alert('Please ensure you enter two different cities!');
     }
+    // (c) otherwise, calls the AJAX function (passing the above variables in as arguments)
     else {
         citiesArray.push(cityApp.getCityInfo(userCityOne));
         citiesArray.push(cityApp.getCityInfo(userCityTwo));
         // console.log("citiesArray", citiesArray);
     }
 
-    // REVIEW: THIS NEEDS TO BE CHANGED --- if the user attempts to search for a second city without pressing the 'choose different cities' button, then ensure
-        // if (citiesArray.length > 2) {
-        //     citiesArray.shift();
-        //     citiesArray.shift();
-        // }
 
-    // after the AJAX call, check to see if both cities are returned successfully (ie: ensure the cities are available in the API), then display the city information. If one or both of the cities are nto returned successfully, then alert the user & do not display any city information
+    // after the AJAX call, check to see if both cities are returned successfully (ie: ensure the cities are available in the API) 
     for (let i = 0; i < citiesArray.length; i++) {
 
         $.when(citiesArray[i])
-
+            // if they both return successfully, then display the city information
             .then(function (item) {
                 console.log('item:', item);
                 console.log('cities array', citiesArray);
                 if (citiesArray[0].statusText === 'OK' && citiesArray[1].statusText === 'OK') {
+                    cityApp.reset();
                     cityApp.displayCityInfo(item, 0);
                     cityApp.displayCityInfo(item, 1);
                     console.log(item.categories);
                 }
             })
 
-            // alert the user if one or more promises resolve unsuccessfully (ie: if their inputted city is not available in the API)
+            // if one or both of the cities are not returned successfully (ie: if user's inputted city is not available in the API), then alert the user & do not display any city information
             .fail(function () {
                 if (i === 0) {
                     alert(`Sorry, the city: ${userCityOne} does not exist, Please Enter Again!`);
@@ -94,46 +91,7 @@ cityApp.getCityInfo = function (cityName) {
             dataType: `json`
         })
 
-    // call display function within .then()
-        // .then((result) => {
-        //     console.log('your ajax request worked:', result);
-        // });
 }
-
-
-
-
-// AJAX FUNCTION (old)
-    // cityApp.getCityInfo = (cityName) => {
-    //     $.ajax({
-    //         url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
-    //         method: `GET`,
-    //         dataType: `json`
-    //     })
-    //     // call display function within .then()
-    //         .then((result) => {
-    //             console.log('your ajax request worked:', result);
-    //             cityApp.displayCityInfo(result);
-    //         });
-    // }
-
-// API ERROR HANDLING (OLD)
-    // cityApp.apiErrorHandling = () => {
-    //     // city must be a valid city (.catch() / .fail())
-    //     // if value (city) is invalid, THEN alert the user
-    // }
-
-// AJAX PROMISE (OLD)
-    // cityApp.getCityPromise = (userCity) => {
-    //     const citiesArray = [];
-    //     for (let n = 1; n <= 2; n++) {
-    //         citiesArray.push(cityApp.getCityInfo(userCity));
-    //     }
-    //     $.when(...citiesArray)
-    //         .then((...successfullyReturnedCity) => {
-    //             console.log(successfullyReturnedCity)
-    //         })
-    // }
 
 
 
@@ -150,9 +108,6 @@ cityApp.totalScores = () => {
 // (9) display (a method that accepts one parameter (user's city object) and displays the city name, image, scores, icons, and category labels on the user's screen)
 cityApp.displayCityInfo = (cityObject, cityCount) => {
 
-    // clear previously appended information
-    // cityApp.reset();
-
     const cityScoresArray = cityObject.categories;
 
     cityScoresArray.map((cityScore) => {
@@ -168,10 +123,6 @@ cityApp.displayCityInfo = (cityObject, cityCount) => {
         else if (cityCount === 1) {
             $('#results-list-city-two').append(`<li>${scoreValueFinal}</li>`);
         } 
-        // else if (cityCount > 2) {
-        //     cityApp.reset();
-        // }
-        
         // console.log('name of score:', cityScore.name);
         // console.log('score rating:', cityScore.score_out_of_10);
     });
