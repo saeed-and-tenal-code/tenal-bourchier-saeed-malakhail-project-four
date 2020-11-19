@@ -435,7 +435,7 @@ form button:hover, form button:focus {
   background-color: black;
   color: white;
   font-size: 1.7rem;
-  margin: 20px;
+  margin-bottom: 50px;
   padding: 10px 15px;
   -webkit-box-shadow: 0 2px 5px black;
           box-shadow: 0 2px 5px black;
@@ -451,7 +451,15 @@ form button:hover, form button:focus {
 }
 
 .results-container-dynamic {
-  padding: 50px;
+  padding: 25px 50px;
+  margin: 50px 0 25px 0;
+  border: 5px solid transparent;
+  -o-border-image: linear-gradient(black, grey, black);
+     border-image: -webkit-gradient(linear, left top, left bottom, from(black), color-stop(grey), to(black));
+     border-image: linear-gradient(black, grey, black);
+  border-image-slice: 100%;
+  border-image-slice: 1;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 /* MINOR BREAKPOINT 1: large desktops */

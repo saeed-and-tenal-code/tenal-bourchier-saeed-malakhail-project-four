@@ -132,6 +132,9 @@ cityApp.displayCityInfo = (cityObject, cityCount) => {
         const chooseDifferentCities = $('<button>').text('Choose Different Cities').addClass('different-cities-button');
         $('#choose-different-cities').append(chooseDifferentCities);
     }
+
+    // add border to dynamic results
+    $('#results-container').addClass('results-container-dynamic');
 }
 
 
@@ -172,6 +175,7 @@ cityApp.reset = () => {
     $('#results-list-city-one').empty();
     $('#results-list-city-two').empty();
     $('#choose-different-cities').empty();
+    $('#results-container').removeClass('results-container-dynamic');
 
     // empty the cities array
     citiesArray.length = 0;
