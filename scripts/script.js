@@ -129,8 +129,8 @@ cityApp.displayCityInfo = (cityObject, cityCount) => {
     
     if (cityCount === 0) {
         // append 'choose different cities' button
-        const chooseDifferentCities = $('<button>').text('Choose Different Cities');
-        $('#choose-different-cities').html(chooseDifferentCities);
+        const chooseDifferentCities = $('<button>').text('Choose Different Cities').addClass('different-cities-button');
+        $('#choose-different-cities').append(chooseDifferentCities);
     }
 }
 
@@ -171,6 +171,7 @@ cityApp.reset = () => {
     $('#results-list-category-titles').empty();
     $('#results-list-city-one').empty();
     $('#results-list-city-two').empty();
+    $('#choose-different-cities').empty();
 
     // empty the cities array
     citiesArray.length = 0;

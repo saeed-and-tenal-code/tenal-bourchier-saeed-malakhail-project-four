@@ -1,6 +1,6 @@
 // general styling
 header {
-    height: 100vh;
+    height: 95vh;
     background-image: url(../assets/new-york-landscape.jpg);
     background-blend-mode: multiply;
     background-size: cover;
@@ -16,7 +16,8 @@ header {
                     text-transform: uppercase;
                     color: white;
                     text-shadow: 0 0 5px black;
-                    margin: 50px 0 150px 0;
+                    margin: 50px 0 110px 0;
+                    text-align: center;
                 }
         }
 }
@@ -28,6 +29,7 @@ header {
     box-shadow: 0 0 15px black;
     width: 500px;
     min-height: 200px;
+    margin-bottom: 10px;
     padding: 15px 30px;
     text-align: center;
     display: flex;
@@ -60,7 +62,7 @@ form {
             box-shadow: 0 2px 5px black;
             text-transform: uppercase;
             // font-weight: bold;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
                 &:hover,
                 &:focus {
                     background-color: #FC9730;
@@ -69,3 +71,37 @@ form {
                 }
         }
 }
+
+// input hover styling
+/* Underline Reveal */ // add to inputs class="hvr-underline-reveal"
+// @mixin underline-reveal {
+// 	$duration: $mediumDuration;
+
+// 	@include hacks();
+// 	position: relative;
+// 	overflow: hidden;
+
+// 	&:before {
+// 		content: "";
+// 		position: absolute;
+// 		z-index: -1;
+// 		left: 0;
+// 		right: 0;
+// 		bottom: 0;
+// 		background: $activeColor;
+// 		height: 4px;
+// 		@include prefixed(transform, translateY(4px));
+// 		@include prefixed(transition-property, transform);
+// 		@include prefixed(transition-duration, $duration);
+// 		@include prefixed(transition-timing-function, ease-out);
+// 	}
+
+// 	&:hover,
+// 	&:focus,
+// 	&:active {
+
+// 		&:before {
+// 			@include prefixed(transform, translateY(0));
+// 		}
+// 	}
+// }

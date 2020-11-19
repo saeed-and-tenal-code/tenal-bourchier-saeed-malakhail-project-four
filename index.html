@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OUR AWESOME PROJECT</title>
     <link rel="stylesheet" href="./styles/style.css">
+    <link href="css/hover-min.css" rel="stylesheet">
     <!-- Google fonts link here -->
     <!-- Icon link here -->
 </head>
@@ -31,29 +32,34 @@
     </header>
 
     <main>
-
-        <section id="results">
-            <div>
+        <!-- dynamically populated results start here -->
+        <section class="results" id="results">
+            <div class="results-container">
                 <ul id="results-list-city-one">
                     <!-- dynamically populate the first city's category scores and icons -->
                 </ul>
-                <ul id="results-list-category-titles">
+                <ul id="results-list-category-titles" class="category-titles">
                     <!-- dynamically populate the category titles -->
                 </ul>
                 <ul id="results-list-city-two">
                     <!-- dynamically populate the second city's category scores and icons -->
                 </ul>
-                <button id="choose-different-cities"></button>
             </div>
+            <div id="choose-different-cities"></div>
         </section>
-
     </main>
     
 
+    <!-- footer starts here -->
+    <footer>
+        <div class="wrapper">
+            <p>&#169; Tenal & Saeed 2020 (made at <a href="https://junocollege.com/">Juno College</a>)</p>
+        </div>
+    </footer>
 
 
 
-    <!-- JAVASCRIPT & JQUERY -->
+    <!-- javascript & jquery -->
     <script src='https://code.jquery.com/jquery-3.4.0.min.js'
         integrity='sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=' crossorigin='anonymous'></script>
     <script src="./scripts/script.js"></script>

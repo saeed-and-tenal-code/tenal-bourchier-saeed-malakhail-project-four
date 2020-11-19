@@ -282,7 +282,7 @@ img {
 }
 
 header {
-  height: 100vh;
+  height: 95vh;
   background-image: url(../assets/new-york-landscape.jpg);
   background-blend-mode: multiply;
   background-size: cover;
@@ -309,7 +309,8 @@ header .header-container h1 {
   text-transform: uppercase;
   color: white;
   text-shadow: 0 0 5px black;
-  margin: 50px 0 150px 0;
+  margin: 50px 0 110px 0;
+  text-align: center;
 }
 
 .form-container {
@@ -319,6 +320,7 @@ header .header-container h1 {
           box-shadow: 0 0 15px black;
   width: 500px;
   min-height: 200px;
+  margin-bottom: 10px;
   padding: 15px 30px;
   text-align: center;
   display: -webkit-box;
@@ -380,12 +382,105 @@ form button {
   -webkit-box-shadow: 0 2px 5px black;
           box-shadow: 0 2px 5px black;
   text-transform: uppercase;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 form button:hover, form button:focus {
   background-color: #FC9730;
   letter-spacing: 0.2rem;
   cursor: pointer;
+}
+
+/* Underline Reveal */
+.results {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: -webkit-gradient(linear, left top, left bottom, from(#FC9730), to(#FEBE66));
+  background: linear-gradient(#FC9730, #FEBE66);
+}
+
+.results .results-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.results .results-container li {
+  padding: 5px 0;
+}
+
+.category-titles {
+  margin: 0 50px;
+}
+
+.different-cities-button {
+  border: none;
+  background-color: black;
+  color: white;
+  font-size: 1.7rem;
+  margin: 20px;
+  padding: 10px 15px;
+  -webkit-box-shadow: 0 2px 5px black;
+          box-shadow: 0 2px 5px black;
+  text-transform: uppercase;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.different-cities-button:hover, .different-cities-button:focus {
+  background-color: #FC9730;
+  color: black;
+  cursor: pointer;
+}
+
+.results-container-dynamic {
+  padding: 50px;
+}
+
+/* MINOR BREAKPOINT 1: large desktops */
+/* MAJOR BREAKPOINT 1: small desktop & portrait tablet */
+/* MAJOR BREAKPOINT 2: portrait tablet & landscape phone */
+/* MAJOR BREAKPOINT 3: landscape phone & down */
+footer {
+  height: 5vh;
+  background-color: black;
+  padding: 10px 0;
+  text-align: center;
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+footer p {
+  font-size: 1.7rem;
+  opacity: 0.7;
+}
+
+footer a {
+  font-style: italic;
+  opacity: 0.6;
 }
