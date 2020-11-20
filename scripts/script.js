@@ -6,8 +6,6 @@ const cityApp = {};
 // (4) declaring global variables & caching selectors
 
 
-
-
 // (5) form submit event listener (a method that prevents the default form behaviour & calls the error handling function when the user submits the form)
 cityApp.formSubmitEvenListener = () => {
 
@@ -22,6 +20,7 @@ cityApp.formSubmitEvenListener = () => {
         const userCityOne = $('#city-one').val();
         const userCityTwo = $('#city-two').val();
 
+        
         // a conditional that:
         // (a) alerts user if input is equal to an empty string
         if (userCityOne === '' || userCityTwo === '') {
@@ -31,7 +30,7 @@ cityApp.formSubmitEvenListener = () => {
         else if (userCityOne === userCityTwo) {
             alert('Please ensure you enter two different cities!');
         }
-
+        
         cityApp.formSubmitErrorHandling(userCityOne, 0);
         cityApp.formSubmitErrorHandling(userCityTwo, 1);
 
@@ -61,10 +60,16 @@ cityApp.formSubmitErrorHandling = (userCity, index) => {
                 cityApp.reset();
                 
             });
-    // }
+
+    // get images for each city
+    $.when (cityApp.getCityImage(userCity, index))
+            
+        .then(function (cityObject) {
+
+            cityApp.displayCityImage(cityObject, index, userCity);
+
+        })
 }
-
-
 
 // (7) AJAX function (a method that accepts one parameter (users city), then calls the API which returns an object containing city scores)
 cityApp.getCityInfo = function (cityName) {
@@ -76,13 +81,25 @@ cityApp.getCityInfo = function (cityName) {
         })
 }
 
+// AJAX function (a method that accepts one parameter (users city), then calls the API which returns an object containing city images)
+cityApp.getCityImage = function (cityName) {
+
+    return $.ajax({
+        url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/images/`,
+        method: `GET`,
+        dataType: `json`
+    })
+}
+
+
+
 
 // (9) display (a method that accepts one parameter (user's city object) and displays the city name, image, scores, icons, and category labels on the user's screen)
 cityApp.displayCityInfo = (cityObject, i) => {
 
     const cityScoresArray = cityObject.categories;
     const totalCityScore = cityObject.teleport_city_score;
-
+   
     cityScoresArray.map((cityScore) => {
         // round the score values to 2 decimal places
         const scoreValueRaw = cityScore.score_out_of_10;
@@ -106,6 +123,22 @@ cityApp.displayCityInfo = (cityObject, i) => {
         // append 'choose different cities' button
         const chooseDifferentCities = $('<button>').text('Choose Different Cities');
         $('#choose-different-cities').html(chooseDifferentCities);
+    }
+}
+
+cityApp.displayCityImage = (cityObject, i, cityName) => {
+    const cityImage = cityObject.photos[0].image.mobile;
+
+    if (i === 0) {
+        const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`);
+        $("#results-image-city-one-container").append(cityOneImage);
+        $("#city-one-name").text(cityName);
+        
+    }
+    else {
+        const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`);
+        $("#results-image-city-two-container").append(cityTwoImage);
+        $("#city-two-name").text(cityName);
     }
 }
 
@@ -145,6 +178,10 @@ cityApp.reset = () => {
     $('#results-list-city-two').empty();
     $('#total-score-city-one').empty();
     $('#total-score-city-two').empty();
+    $("#results-image-city-one-container").empty();
+    $("#results-image-city-two-container").empty();
+    $("#city-one-name").empty();
+    $("#city-two-name").empty();
 }
 
 
