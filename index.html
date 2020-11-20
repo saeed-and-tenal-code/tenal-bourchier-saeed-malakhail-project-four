@@ -5,66 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OUR AWESOME PROJECT</title>
     <link rel="stylesheet" href="./styles/style.css">
+    <link href="css/hover-min.css" rel="stylesheet">
     <!-- Google fonts link here -->
     <!-- Icon link here -->
 </head>
+
 <body>
-    
-    <header>
-        <h1>PROJECT 4</h1>
+    <!-- header starts here -->
+    <header id="header">
+        <div class="wrapper header-container">
+            <h1>Project 4 title here</h1>
+            <div class="form-container">
+                <p>Interested in moving? Compare the quality of life between major international cities!</p>
+                <!-- form starts here -->
+                <form action="">
+                    <div class="inputs-container">
+                        <label for="city-one" class="sr-only">Enter your first city here</label>
+                        <input type="text" id="city-one" name="city-one" placeholder="Enter first city..." required>
+                        <label for="city-two" class="sr-only">Enter your second city here</label>
+                        <input type="text" id="city-two" name="city-two" placeholder="Enter second city..." required>
+                    </div>
+                    <button class="" type="submit">Compare</button>
+                </form>
+            </div>
+        </div>
     </header>
 
     <main>
-        <form action="">
-            <label for="city-one">City 1</label>
-            <p class="sr-only">Enter Your First City Here</p>
-            <input type="text" id="city-one" name="city-one">
-            <label for="city-two">City 2</label>
-            <p class="sr-only">Enter Your Second City Here</p>
-            <input type="text" id="city-two" name="city-two">
-            <button class="" type="submit">Compare</button>
-        </form>
-
-        <section id="results">
-            <div>
-                <h2 id="city-one-name"></h2>
-                <h3 id="total-score-city-one">
-                    <!-- dynamically populate the first city's total score -->
-                </h3>
-                <div id="results-image-city-one-container">
-                    <!-- dynamically populate the first city's image -->
+        <!-- dynamically populated results start here -->
+        <section class="results" id="results">
+            <div id="results-container" class="results-container wrapper">
+                <div class="results-list">
+                    <h2 id="city-one-name">
+                        <!-- dynamically populate the first city's name -->
+                    </h2>
+                    <h3 id="total-score-city-one">
+                        <!-- dynamically populate the first city's total score -->
+                    </h3>
+                    <div id="results-image-city-one-container">
+                        <!-- dynamically populate the first city's image -->
+                    </div>
+                    <ul id="results-list-city-one">
+                        <!-- dynamically populate the first city's category scores and icons -->
+                    </ul>
                 </div>
-                <ul id="results-list-city-one">
-                    <!-- dynamically populate the first city's category scores and icons -->
-                </ul>
-            </div>
-            <div>
-                <ul id="results-list-category-titles">
-                    <!-- dynamically populate the category titles -->
-                </ul>
-            </div>
-            <div>
-                <h2 id="city-two-name"></h2>
-                <h3 id="total-score-city-two">
-                    <!-- dynamically populate the second city's total score -->
-                </h3>
-                <div id="results-image-city-two-container">
-                    <!-- dynamically populate the second city's image -->
+                <div class="results-list category-titles">
+                    <ul id="results-list-category-titles">
+                        <!-- dynamically populate the category titles -->
+                    </ul>
                 </div>
-                <ul id="results-list-city-two">
-                    <!-- dynamically populate the second city's category scores and icons -->
-                </ul>
+                <div class="results-list">
+                    <h2 id="city-two-name">
+                        <!-- dynamically populate the second city's name -->
+                    </h2>
+                    <h3 id="total-score-city-two">
+                        <!-- dynamically populate the second city's total score -->
+                    </h3>
+                    <div id="results-image-city-two-container">
+                        <!-- dynamically populate the second city's image -->
+                    </div>
+                    <ul id="results-list-city-two">
+                        <!-- dynamically populate the second city's category scores and icons -->
+                    </ul>
+                </div>
             </div>
-                <button id="choose-different-cities"></button>
+            <div id="choose-different-cities"></div>
         </section>
-
     </main>
-    
 
+    <!-- footer starts here -->
+    <footer>
+        <div class="wrapper">
+            <p>&#169; Tenal & Saeed 2020 (made at <a href="https://junocollege.com/">Juno College</a>)</p>
+        </div>
+    </footer>
 
-
-
-    <!-- JAVASCRIPT & JQUERY -->
+    <!-- javascript & jquery -->
     <script src='https://code.jquery.com/jquery-3.4.0.min.js'
         integrity='sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=' crossorigin='anonymous'></script>
     <script src="./scripts/script.js"></script>
