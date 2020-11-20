@@ -21,16 +21,11 @@ cityApp.formSubmitEvenListener = () => {
         const userCityOne = $('#city-one').val();
         const userCityTwo = $('#city-two').val();
 
-        // format the input values to match the APIs required input (ensure inputs are lower case & that spaces are replaced with a dash, ex: new york -> new-york)
+        // format the input values to match the APIs required input (ensure inputs are lower case & that spaces are replaced with a dash, ex: New york -> new-york)
             // REVIEW: 
-            // (1) ADD toLowerCase() as well!!! 
-            // (2) review replacement of variables in line 32 - 43. 
             // (3) add reverse of below to modify user inputs in DISPLAY method
-        const correctUserInputOne = $.trim(userCityOne.replace(/\b \b/g, '-'));
-        const correctUserInputTwo = $.trim(userCityTwo.replace(/\b \b/g, '-'));
-
-        $('#city-one').val(correctUserInputOne);
-        $('#city-two').val(correctUserInputTwo);
+        const correctUserInputOne = $.trim(userCityOne.replace(/\b \b/g, '-')).toLowerCase();
+        const correctUserInputTwo = $.trim(userCityTwo.replace(/\b \b/g, '-')).toLowerCase();
 
         // (a) alert user if input is equal to an empty string
         if (correctUserInputOne === '' || correctUserInputTwo === '') {
@@ -77,10 +72,12 @@ cityApp.formSubmitErrorHandling = (userCity, index) => {
     // call the function that runs the AJAX call for city images
     $.when (cityApp.getCityImage(userCity, index))
 
-        // then display the city image & name
+        // then display the city image/name and bring the user to the results
         .then(function (cityObject) {
 
             cityApp.displayCityImage(cityObject, index, userCity);
+
+            cityApp.scrollToResults();
 
         })
 }
@@ -138,15 +135,18 @@ cityApp.displayCityInfo = (cityObject, i) => {
         // console.log('name of score:', cityScore.name);
         // console.log('score rating:', cityScore.score_out_of_10);
     });
-    
+
+    // add border to dynamic results
+    $('#results-container').addClass('results-container-dynamic');
+
+    // append 'choose different cities' button
     if (i === 0) {
-        // append 'choose different cities' button
         const chooseDifferentCities = $('<button>').text('Choose Different Cities').addClass('different-cities-button');
         $('#choose-different-cities').append(chooseDifferentCities);
     }
 
-    // add border to dynamic results
-    $('#results-container').addClass('results-container-dynamic');
+    // ensure user can click 'choose different cities' button
+    cityApp.chooseDifferentCities();
 }
 
 
@@ -157,16 +157,17 @@ cityApp.displayCityImage = (cityObject, i, cityName) => {
 
     // a conditional that appends the name & image for city 1 and city 2 in separate divs
     if (i === 0) {
-        const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`);
+        const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`).css({ margin: '0 0 15px 0' });
         $("#results-image-city-one-container").append(cityOneImage);
         $("#city-one-name").text(cityName);
         
     }
     else {
-        const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`);
+        const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`).css({ margin: '0 0 15px 0' });
         $("#results-image-city-two-container").append(cityTwoImage);
         $("#city-two-name").text(cityName);
     }
+
 }
 
 
@@ -186,8 +187,14 @@ cityApp.chooseDifferentCities = () => {
     // listen for when the user clicks the 'compare different cities' button
     $('#choose-different-cities').on('click', function () {
 
+        console.log('CLICK!');
+
         // clear any appended content
         cityApp.reset();
+
+        // empty both inputs & put focus back in first input field
+        $('#city-one').val('').focus();
+        $('#city-two').val('');
 
         // remove button
         // $('#choose-different-cities').empty();
@@ -214,12 +221,19 @@ cityApp.reset = () => {
     $('#results-container').removeClass('results-container-dynamic');
     $("#results-image-city-one-container").empty();
     $("#results-image-city-two-container").empty();
+
+    // empty both inputs & put focus back in first input field
+    // $('#city-one').focus();
 }
 
 
 
 // (2) initialization (a method that initializes the app)
 cityApp.init = () => {
+
+    // put focus inside of the first input field upon page load
+    $('#city-one').focus();
+
     cityApp.formSubmitEvenListener();
 }
 
