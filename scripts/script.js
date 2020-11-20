@@ -21,18 +21,29 @@ cityApp.formSubmitEvenListener = () => {
         const userCityOne = $('#city-one').val();
         const userCityTwo = $('#city-two').val();
 
+        // format the input values to match the APIs required input (ensure inputs are lower case & that spaces are replaced with a dash, ex: new york -> new-york)
+            // REVIEW: 
+            // (1) ADD toLowerCase() as well!!! 
+            // (2) review replacement of variables in line 32 - 43. 
+            // (3) add reverse of below to modify user inputs in DISPLAY method
+        const correctUserInputOne = $.trim(userCityOne.replace(/\b \b/g, '-'));
+        const correctUserInputTwo = $.trim(userCityTwo.replace(/\b \b/g, '-'));
+
+        $('#city-one').val(correctUserInputOne);
+        $('#city-two').val(correctUserInputTwo);
+
         // (a) alert user if input is equal to an empty string
-        if (userCityOne === '' || userCityTwo === '') {
+        if (correctUserInputOne === '' || correctUserInputTwo === '') {
             alert('Please ensure you enter a city name!');
         }
         // (b) alert user if the inputs are equal to each other
-        else if (userCityOne === userCityTwo) {
+        else if (correctUserInputOne === correctUserInputTwo) {
             alert('Please ensure you enter two different cities!');
         }
-        
+
         // call API error handling function
-        cityApp.formSubmitErrorHandling(userCityOne, 0);
-        cityApp.formSubmitErrorHandling(userCityTwo, 1);
+        cityApp.formSubmitErrorHandling(correctUserInputOne, 0);
+        cityApp.formSubmitErrorHandling(correctUserInputTwo, 1);
     });
 }
 
@@ -107,11 +118,11 @@ cityApp.displayCityInfo = (cityObject, i) => {
 
     cityScoresArray.map((cityScore) => {
 
-        // round all score values to 2 decimal places
+        // round all score values to 1 decimal place
         const scoreValueRaw = cityScore.score_out_of_10;
-        const scoreValueFinal = scoreValueRaw.toFixed(2);
+        const scoreValueFinal = scoreValueRaw.toFixed(1);
         const scoreTotalRaw = cityObject.teleport_city_score;
-        const scoreTotalFinal = scoreTotalRaw.toFixed(2)
+        const scoreTotalFinal = scoreTotalRaw.toFixed(1)
         
 
         // a conditional that appends scores for city 1 and city 2 in separate lists
