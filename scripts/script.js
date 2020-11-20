@@ -104,7 +104,6 @@ cityApp.totalScores = () => {
 
 
 
-
 // (9) display (a method that accepts one parameter (user's city object) and displays the city name, image, scores, icons, and category labels on the user's screen)
 cityApp.displayCityInfo = (cityObject, cityCount) => {
 
