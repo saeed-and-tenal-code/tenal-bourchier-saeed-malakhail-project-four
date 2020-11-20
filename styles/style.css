@@ -408,26 +408,39 @@ form button:hover, form button:focus {
   background: linear-gradient(#FC9730, #FEBE66);
 }
 
-.results .results-container {
+.results-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  text-align: center;
-  font-size: 2rem;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
 }
 
-.results .results-container li {
+.results-container div.results-list {
+  text-align: center;
+}
+
+.results-container div.results-list h2 {
+  font-size: 3rem;
+  text-transform: uppercase;
+}
+
+.results-container div.results-list h3 {
+  font-size: 2rem;
+  margin: 15px 0;
+}
+
+.results-container div.results-list li {
+  font-size: 2rem;
   padding: 5px 0;
 }
 
-.category-titles {
-  margin: 0 50px;
+.results-container div.category-titles {
+  min-width: 300px;
 }
 
 .different-cities-button {
@@ -454,12 +467,12 @@ form button:hover, form button:focus {
   padding: 25px 50px;
   margin: 50px 0 25px 0;
   border: 5px solid transparent;
-  -o-border-image: linear-gradient(black, #c0bebe, black);
-     border-image: -webkit-gradient(linear, left top, left bottom, from(black), color-stop(#c0bebe), to(black));
-     border-image: linear-gradient(black, #c0bebe, black);
+  -o-border-image: linear-gradient(black, #f1efef);
+     border-image: -webkit-gradient(linear, left top, left bottom, from(black), to(#f1efef));
+     border-image: linear-gradient(black, #f1efef);
   border-image-slice: 100%;
   border-image-slice: 1;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 /* MINOR BREAKPOINT 1: large desktops */

@@ -4,20 +4,30 @@
     flex-direction: column;
     align-items: center;
     background: linear-gradient(#FC9730, #FEBE66);
-        .results-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+}
+
+.results-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+        div.results-list {
             text-align: center;
-            font-size: 2rem;
+                h2 {
+                    font-size: 3rem;
+                    text-transform: uppercase;
+                }
+                h3 {
+                    font-size: 2rem;
+                    margin: 15px 0;
+                }
                 li {
+                    font-size: 2rem;
                     padding: 5px 0;
                 }
         }
-}
-
-.category-titles {
-    margin: 0 50px;
+        div.category-titles {
+            min-width: 300px;
+        }
 }
 
 // results button styling (change this to class & add class on with JS)
@@ -40,14 +50,13 @@
         }
 }
 
-
 // classes added to dynamic content
 .results-container-dynamic {
     padding: 25px 50px;
     margin: 50px 0 25px 0;
     border: 5px solid transparent;
-    border-image: linear-gradient(black, rgb(192, 190, 190), black);
+    border-image: linear-gradient(black, rgb(241, 239, 239));
     border-image-slice: 100%;
     border-image-slice: 1;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.5);
 }

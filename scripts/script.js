@@ -6,43 +6,44 @@ const cityApp = {};
 // (4) declaring global variables & caching selectors
 
 
-// (5) form submit event listener (a method that prevents the default form behaviour & calls the error handling function when the user submits the form)
+
+// (5) form submit event listener (a method that, upon form submit, prevents the default form behaviour, stores the user's inputs, and ensures the user a) hasn't submitted an empty input field, and b) has inputted two different cities)
 cityApp.formSubmitEvenListener = () => {
 
-    // on form submit store the user's inputted values into variables
+    // listen for the user to submit the form
     $('form').on('submit', function (event) {
         event.preventDefault();
         
-        // empty appended results
+        // clear any appended results
         cityApp.reset();
 
         // store the user's input values in variables
         const userCityOne = $('#city-one').val();
         const userCityTwo = $('#city-two').val();
 
-        
-        // a conditional that:
-        // (a) alerts user if input is equal to an empty string
+        // (a) alert user if input is equal to an empty string
         if (userCityOne === '' || userCityTwo === '') {
             alert('Please ensure you enter a city name!');
         }
-        // (b) alerts user if the inputs are equal to each other
+        // (b) alert user if the inputs are equal to each other
         else if (userCityOne === userCityTwo) {
             alert('Please ensure you enter two different cities!');
         }
         
+        // call API error handling function
         cityApp.formSubmitErrorHandling(userCityOne, 0);
         cityApp.formSubmitErrorHandling(userCityTwo, 1);
-
-    })
+    });
 }
 
 
-// (6) error handling (a method that ensures the user a) hasn't submitted an empty input field, b) has inputted two different cities, and c) the inputted city is available in the API)
+
+// (6) API error handling (a method that ensures the user's inputted city is available in the API)
 cityApp.formSubmitErrorHandling = (userCity, index) => {
 
-    // after the AJAX call, check to see if both cities are returned successfully (ie: ensure the cities are available in the API) 
+    // call the function that runs the AJAX call for city scores, then check to see if both cities are returned successfully (ie: ensure both cities are available in the API) 
     $.when(cityApp.getCityInfo(userCity))
+
             // if they both return successfully, then display the city information
             .then(function (item) {
 
@@ -50,20 +51,22 @@ cityApp.formSubmitErrorHandling = (userCity, index) => {
 
             })
 
-            // if one or both of the cities are not returned successfully (ie: if user's inputted city is not available in the API), then alert the user & do not display any city information
+            // if one or both of the cities are not returned successfully, then alert the user & do not display any city information
             .fail(function (item) { 
                 // console.log(item);
 
-                // Alert the user 
+                // alert the user 
                 console.log(userCity);
 
+                // clear any appended results
                 cityApp.reset();
-                
+
             });
 
-    // get images for each city
+    // call the function that runs the AJAX call for city images
     $.when (cityApp.getCityImage(userCity, index))
-            
+
+        // then display the city image & name
         .then(function (cityObject) {
 
             cityApp.displayCityImage(cityObject, index, userCity);
@@ -71,47 +74,54 @@ cityApp.formSubmitErrorHandling = (userCity, index) => {
         })
 }
 
-// (7) AJAX function (a method that accepts one parameter (users city), then calls the API which returns an object containing city scores)
+
+
+// (7) AJAX city scores (a method that calls the API which returns an object containing city scores)
 cityApp.getCityInfo = function (cityName) {
 
     return $.ajax({
             url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
             method: `GET`,
             dataType: `json`
-        })
+        });
 }
 
-// AJAX function (a method that accepts one parameter (users city), then calls the API which returns an object containing city images)
+
+
+// (8) AJAX city image (a method that calls the API which returns an object containing the city image & name)
 cityApp.getCityImage = function (cityName) {
 
     return $.ajax({
         url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/images/`,
         method: `GET`,
         dataType: `json`
-    })
+    });
 }
 
 
 
-// (9) display (a method that accepts one parameter (user's city object) and displays the city name, image, scores, icons, and category labels on the user's screen)
+// (9) display city scores (a method that displays the scores, icons, and category labels on the user's screen)
 cityApp.displayCityInfo = (cityObject, i) => {
 
     const cityScoresArray = cityObject.categories;
-    const totalCityScore = cityObject.teleport_city_score;
-   
+
     cityScoresArray.map((cityScore) => {
-        // round the score values to 2 decimal places
+
+        // round all score values to 2 decimal places
         const scoreValueRaw = cityScore.score_out_of_10;
         const scoreValueFinal = scoreValueRaw.toFixed(2);
+        const scoreTotalRaw = cityObject.teleport_city_score;
+        const scoreTotalFinal = scoreTotalRaw.toFixed(2)
+        
 
         // a conditional that appends scores for city 1 and city 2 in separate lists
         if (i === 0) {
-            $('#total-score-city-one').text(`Total Score: ${totalCityScore}`);
+            $('#total-score-city-one').text(`Total Score: ${scoreTotalFinal} / 100`);
             $('#results-list-city-one').append(`<li>${scoreValueFinal}</li>`); 
             $('#results-list-category-titles').append(`<li>${cityScore.name}</li>`);
         }
         else {
-            $('#total-score-city-two').text(`Total Score: ${totalCityScore}`);
+            $('#total-score-city-two').text(`Total Score: ${scoreTotalFinal} / 100`);
             $('#results-list-city-two').append(`<li>${scoreValueFinal}</li>`);
         } 
         // console.log('name of score:', cityScore.name);
@@ -128,9 +138,13 @@ cityApp.displayCityInfo = (cityObject, i) => {
     $('#results-container').addClass('results-container-dynamic');
 }
 
+
+
+// (10) display city name and photo (a method that displays the city name and image on the user's screen
 cityApp.displayCityImage = (cityObject, i, cityName) => {
     const cityImage = cityObject.photos[0].image.mobile;
 
+    // a conditional that appends the name & image for city 1 and city 2 in separate divs
     if (i === 0) {
         const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`);
         $("#results-image-city-one-container").append(cityOneImage);
@@ -145,7 +159,8 @@ cityApp.displayCityImage = (cityObject, i, cityName) => {
 }
 
 
-// (10) scroll function (a method to automatically bring users to results)
+
+// (11) scroll function (a method to automatically bring users to results)
 cityApp.scrollToResults = () => {
     $('html').animate({
         scrollTop: $('#results').offset().top
@@ -153,17 +168,18 @@ cityApp.scrollToResults = () => {
 }
 
 
-// (11) choose different cities (a method that removes appended content, scrolls to the top of the page,  allows suers to search again)
+
+// (12) choose different cities (a method that removes appended content, scrolls to the top of the page, and allows users to search again)
 cityApp.chooseDifferentCities = () => {
 
-    // listen for when the user clicks the 'compare different cities' button, when clicked:
+    // listen for when the user clicks the 'compare different cities' button
     $('#choose-different-cities').on('click', function () {
 
-        // clear cities array and appended content
+        // clear any appended content
         cityApp.reset();
 
-        // remove button from
-        $('#choose-different-cities').empty();
+        // remove button
+        // $('#choose-different-cities').empty();
 
         // scroll to top of page to allow users to input new values (cities)
             // call scroll function here
@@ -172,23 +188,21 @@ cityApp.chooseDifferentCities = () => {
 }
 
 
-// reset function
+
+// (13) reset (a method that clears all appended content in the results section)
 cityApp.reset = () => {
     // remove all appended content
+    $("#city-one-name").empty();
+    $("#city-two-name").empty();
     $('#results-list-category-titles').empty();
     $('#results-list-city-one').empty();
     $('#results-list-city-two').empty();
-    $('#choose-different-cities').empty();
-    $('#results-container').removeClass('results-container-dynamic');
-
-    // empty the cities array
-    citiesArray.length = 0;
     $('#total-score-city-one').empty();
     $('#total-score-city-two').empty();
+    $('#choose-different-cities').empty();
+    $('#results-container').removeClass('results-container-dynamic');
     $("#results-image-city-one-container").empty();
     $("#results-image-city-two-container").empty();
-    $("#city-one-name").empty();
-    $("#city-two-name").empty();
 }
 
 
