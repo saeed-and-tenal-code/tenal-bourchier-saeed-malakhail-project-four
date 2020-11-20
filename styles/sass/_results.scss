@@ -1,15 +1,13 @@
 // results layout styling
 .results {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(#FC9730, #FEBE66);
+    display: none;
 }
 
 .results-container {
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    // height: 0vh;
         div.results-list {
             text-align: center;
                 h2 {
@@ -51,6 +49,13 @@
 }
 
 // classes added to dynamic content
+.results-dynamic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(#FC9730, #FEBE66);
+}
+
 .results-container-dynamic {
     padding: 25px 50px;
     margin: 50px 0 25px 0;
@@ -59,4 +64,5 @@
     border-image-slice: 100%;
     border-image-slice: 1;
     background-color: rgba(255, 255, 255, 0.5);
+    // min-height: 100vh;
 }

@@ -111,6 +111,10 @@ cityApp.getCityImage = function (cityName) {
 // (9) display city scores (a method that displays the scores, icons, and category labels on the user's screen)
 cityApp.displayCityInfo = (cityObject, i) => {
 
+    // add border & height to dynamic results
+    $('#results').addClass('results-dynamic');
+    $('#results-container').addClass('results-container-dynamic');
+
     const cityScoresArray = cityObject.categories;
 
     cityScoresArray.map((cityScore) => {
@@ -120,7 +124,6 @@ cityApp.displayCityInfo = (cityObject, i) => {
         const scoreValueFinal = scoreValueRaw.toFixed(1);
         const scoreTotalRaw = cityObject.teleport_city_score;
         const scoreTotalFinal = scoreTotalRaw.toFixed(1)
-        
 
         // a conditional that appends scores for city 1 and city 2 in separate lists
         if (i === 0) {
@@ -136,8 +139,6 @@ cityApp.displayCityInfo = (cityObject, i) => {
         // console.log('score rating:', cityScore.score_out_of_10);
     });
 
-    // add border to dynamic results
-    $('#results-container').addClass('results-container-dynamic');
 
     // append 'choose different cities' button
     if (i === 0) {
@@ -199,10 +200,7 @@ cityApp.chooseDifferentCities = () => {
         // remove button
         // $('#choose-different-cities').empty();
 
-        // scroll to top of page to allow users to input new values (cities)
-            // call scroll function here
     });
-
 }
 
 
@@ -210,6 +208,8 @@ cityApp.chooseDifferentCities = () => {
 // (13) reset (a method that clears all appended content in the results section)
 cityApp.reset = () => {
     // remove all appended content
+    $('#results').removeClass('results-dynamic');
+    $('#results-container').removeClass('results-container-dynamic');
     $("#city-one-name").empty();
     $("#city-two-name").empty();
     $('#results-list-category-titles').empty();
@@ -218,7 +218,6 @@ cityApp.reset = () => {
     $('#total-score-city-one').empty();
     $('#total-score-city-two').empty();
     $('#choose-different-cities').empty();
-    $('#results-container').removeClass('results-container-dynamic');
     $("#results-image-city-one-container").empty();
     $("#results-image-city-two-container").empty();
 

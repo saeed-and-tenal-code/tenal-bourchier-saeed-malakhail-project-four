@@ -394,18 +394,7 @@ form button:hover, form button:focus {
 
 /* Underline Reveal */
 .results {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  background: -webkit-gradient(linear, left top, left bottom, from(#FC9730), to(#FEBE66));
-  background: linear-gradient(#FC9730, #FEBE66);
+  display: none;
 }
 
 .results-container {
@@ -461,6 +450,21 @@ form button:hover, form button:focus {
   background-color: #FC9730;
   color: black;
   cursor: pointer;
+}
+
+.results-dynamic {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: -webkit-gradient(linear, left top, left bottom, from(#FC9730), to(#FEBE66));
+  background: linear-gradient(#FC9730, #FEBE66);
 }
 
 .results-container-dynamic {
