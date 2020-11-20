@@ -58,10 +58,11 @@ cityApp.formSubmitErrorHandling = (userCity, index) => {
             })
 
             // if one or both of the cities are not returned successfully, then alert the user & do not display any city information
-            .fail(function (item) { 
+            .fail(function () { 
                 // console.log(item);
 
                 // alert the user 
+                alert(`Sorry, looks like ${userCity} isn't in our database! Please try another search.`);
                 console.log(userCity);
 
                 // clear any appended results
@@ -124,10 +125,13 @@ cityApp.displayCityInfo = (cityObject, i) => {
         // a conditional that appends scores for city 1 and city 2 in separate lists
         if (i === 0) {
             $('#total-score-city-one').text(`Total Score: ${scoreTotalFinal} / 100`);
-            $('#results-list-city-one').append(`<li>${scoreValueFinal}</li>`); 
+            $('#scores-heading-city-one').text(`Score out of 10`);
+            $('#results-list-city-one').append(`<li>${scoreValueFinal}</li>`);
+            $('#category-titles').text(`Category Titles`); 
             $('#results-list-category-titles').append(`<li>${cityScore.name}</li>`);
         }
         else {
+            $('#scores-heading-city-two').text(`Score out of 10`);
             $('#total-score-city-two').text(`Total Score: ${scoreTotalFinal} / 100`);
             $('#results-list-city-two').append(`<li>${scoreValueFinal}</li>`);
         } 
@@ -153,18 +157,20 @@ cityApp.displayCityInfo = (cityObject, i) => {
 // (10) display city name and photo (a method that displays the city name and image on the user's screen
 cityApp.displayCityImage = (cityObject, i, cityName) => {
     const cityImage = cityObject.photos[0].image.mobile;
+    // replaced city names with hypens with an empty space
+    const correctedCityName = $.trim(cityName.replace(/-/g, ' '));
 
     // a conditional that appends the name & image for city 1 and city 2 in separate divs
     if (i === 0) {
-        const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`).css({ margin: '0 0 15px 0' });
+        const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
         $("#results-image-city-one-container").append(cityOneImage);
-        $("#city-one-name").text(cityName);
+        $("#city-one-name").text(correctedCityName);
         
     }
     else {
-        const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`).css({ margin: '0 0 15px 0' });
+        const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
         $("#results-image-city-two-container").append(cityTwoImage);
-        $("#city-two-name").text(cityName);
+        $("#city-two-name").text(correctedCityName);
     }
 
 }
@@ -212,6 +218,9 @@ cityApp.reset = () => {
     $("#city-one-name").empty();
     $("#city-two-name").empty();
     $('#results-list-category-titles').empty();
+    $('#category-titles').empty();
+    $('#scores-heading-city-one').empty();
+    $('#scores-heading-city-two').empty();
     $('#results-list-city-one').empty();
     $('#results-list-city-two').empty();
     $('#total-score-city-one').empty();
