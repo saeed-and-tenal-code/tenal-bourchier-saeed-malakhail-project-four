@@ -20,19 +20,26 @@ cityApp.formSubmitEvenListener = () => {
         const userCityOne = $('#city-one').val();
         const userCityTwo = $('#city-two').val();
 
+        // replace empty spaces with dash only ie. new york -> new-york
+        const correctUserInputOne = $.trim(userCityOne.replace(/\b \b/g, '-'));
+        const correctUserInputTwo = $.trim(userCityTwo.replace(/\b \b/g, '-'));
+
+        // update the input values to match the APIs correct input
+        $('#city-one').val(correctUserInputOne); 
+        $('#city-two').val(correctUserInputTwo);
         
         // a conditional that:
         // (a) alerts user if input is equal to an empty string
-        if (userCityOne === '' || userCityTwo === '') {
+        if (correctUserInputOne === '' || correctUserInputTwo === '') {
             alert('Please ensure you enter a city name!');
         }
         // (b) alerts user if the inputs are equal to each other
-        else if (userCityOne === userCityTwo) {
+        else if (correctUserInputOne === correctUserInputTwo) {
             alert('Please ensure you enter two different cities!');
         }
         
-        cityApp.formSubmitErrorHandling(userCityOne, 0);
-        cityApp.formSubmitErrorHandling(userCityTwo, 1);
+        cityApp.formSubmitErrorHandling(correctUserInputOne, 0);
+        cityApp.formSubmitErrorHandling(correctUserInputTwo, 1);
 
     })
 }
@@ -98,7 +105,8 @@ cityApp.getCityImage = function (cityName) {
 cityApp.displayCityInfo = (cityObject, i) => {
 
     const cityScoresArray = cityObject.categories;
-    const totalCityScore = cityObject.teleport_city_score;
+    // round the final score UP to nearest whole number
+    const totalCityScore = Math.ceil(cityObject.teleport_city_score);
    
     cityScoresArray.map((cityScore) => {
         // round the score values to 2 decimal places
@@ -107,12 +115,12 @@ cityApp.displayCityInfo = (cityObject, i) => {
 
         // a conditional that appends scores for city 1 and city 2 in separate lists
         if (i === 0) {
-            $('#total-score-city-one').text(`Total Score: ${totalCityScore}`);
+            $('#total-score-city-one').text(`Total Score: ${totalCityScore}%`);
             $('#results-list-city-one').append(`<li>${scoreValueFinal}</li>`); 
             $('#results-list-category-titles').append(`<li>${cityScore.name}</li>`);
         }
         else {
-            $('#total-score-city-two').text(`Total Score: ${totalCityScore}`);
+            $('#total-score-city-two').text(`Total Score: ${totalCityScore}%`);
             $('#results-list-city-two').append(`<li>${scoreValueFinal}</li>`);
         } 
         // console.log('name of score:', cityScore.name);
