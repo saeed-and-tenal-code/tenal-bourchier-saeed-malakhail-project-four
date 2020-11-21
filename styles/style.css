@@ -432,7 +432,7 @@ form button:hover, form button:focus, form button:active {
 
 .results-container div.results-list li {
   font-size: 2rem;
-  padding: 5px 0;
+  padding: 15px 0;
 }
 
 .results-container div.category-titles {
@@ -487,6 +487,10 @@ form button:hover, form button:focus, form button:active {
   border-image-slice: 100%;
   border-image-slice: 1;
   background-color: rgba(255, 255, 255, 0.5);
+}
+
+.dynamic-category-titles {
+  color: #000000;
 }
 
 footer {

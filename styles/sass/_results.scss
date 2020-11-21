@@ -25,7 +25,7 @@
                 }
                 li {
                     font-size: 2rem;
-                    padding: 5px 0;
+                    padding: 15px 0;
                 }
         }
         div.category-titles {
@@ -71,4 +71,8 @@
     border-image-slice: 100%;
     border-image-slice: 1;
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+.dynamic-category-titles {
+    color: $font-primary;
 }
