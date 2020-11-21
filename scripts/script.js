@@ -2,9 +2,23 @@
 const cityApp = {};
 
 
-
-// (4) declaring global variables & caching selectors
-
+// (4) cached selectors
+const $results = $('#results');
+const $resultsContainer = $('#results-container');
+const $cityOneInput = $('#city-one');
+const $cityTwoInput = $('#city-two');
+const $cityOneName = $("#city-one-name");
+const $cityTwoName = $("#city-two-name");
+const $cityOneImageContainer = $("#results-image-city-one-container");
+const $cityTwoImageContainer = $("#results-image-city-two-container");
+const $cityOneTotalScore = $('#total-score-city-one');
+const $cityTwoTotalScore = $('#total-score-city-two');
+const $cityOneScoresHeading = $('#scores-heading-city-one');
+const $cityTwoScoresHeading = $('#scores-heading-city-two');
+const $cityOneScores = $('#results-list-city-one');
+const $cityTwoScores = $('#results-list-city-two');
+const $scoreCategoryTitles = $('#results-list-category-titles');
+const $chooseDifferentCities = $('#choose-different-cities');
 
 
 // (5) form submit event listener (a method that, upon form submit, prevents the default form behaviour, stores the user's inputs, and ensures the user a) hasn't submitted an empty input field, and b) has inputted two different cities)
@@ -18,8 +32,8 @@ cityApp.formSubmitEventListener = () => {
         cityApp.reset();
 
         // store the user's input values in variables
-        const userCityOne = $('#city-one').val();
-        const userCityTwo = $('#city-two').val();
+        const userCityOne = $cityOneInput.val();
+        const userCityTwo = $cityTwoInput.val();
 
         // format the input values to match the APIs required input (ensure inputs are lower case & that spaces are replaced with a dash, ex: New york -> new-york)
         const correctUserInputOne = $.trim(userCityOne.replace(/\b \b/g, '-')).toLowerCase();
@@ -39,7 +53,6 @@ cityApp.formSubmitEventListener = () => {
         // cityApp.apiErrorHandling(correctUserInputTwo, 1);
     });
 }
-
 
 
 // (6) API error handling (a method that ensures the user's inputted city is available in the API) & AJAX city scores (a method that calls the API which returns an object containing city scores)
@@ -85,10 +98,7 @@ cityApp.apiErrorHandling = (userCityOne, userCityTwo) => {
 }
 
 
-
-
-// (8) AJAX city image (a method that calls the API which returns an object containing the city image & name)
-
+// (7) AJAX city image (a method that calls the API which returns an object containing the city image & name)
 cityApp.getCityImage = function (cityNameOne, cityNameTwo) {
     // AJAX call for city one image
     $.ajax({
@@ -112,13 +122,12 @@ cityApp.getCityImage = function (cityNameOne, cityNameTwo) {
 }
 
 
-
-// (9) display city scores (a method that displays the scores, icons, and category labels on the user's screen)
+// (8) display city scores (a method that displays the scores, icons, and category labels on the user's screen)
 cityApp.displayCityInfo = (cityObject, i) => {
 
     // add border & height to dynamic results
-    $('#results').addClass('results-dynamic');
-    $('#results-container').addClass('results-container-dynamic');
+    $results.addClass('results-dynamic');
+    $resultsContainer.addClass('results-container-dynamic');
 
     const cityScoresArray = cityObject.categories;
     // let cityOneTotalScore = 0;
@@ -136,15 +145,15 @@ cityApp.displayCityInfo = (cityObject, i) => {
 
         // a conditional that appends scores for city 1 and city 2 in separate lists
         if (i === 0) {
-            $('#total-score-city-one').text(`Total Score: ${scoreTotalFinal} / 100`);
-            $('#scores-heading-city-one').text(`Score out of 10`);
-            $('#results-list-city-one').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
-            $('#results-list-category-titles').append(`<li>${cityScore.name}</li>`);
+            $cityOneTotalScore.text(`Total Score: ${scoreTotalFinal} / 100`);
+            $cityOneScoresHeading.text(`Score out of 10`);
+            $cityOneScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+            $scoreCategoryTitles.append(`<li>${cityScore.name}</li>`);
         }
         else {
-            $('#scores-heading-city-two').text(`Score out of 10`);
-            $('#total-score-city-two').text(`Total Score: ${scoreTotalFinal} / 100`);
-            $('#results-list-city-two').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+            $cityTwoTotalScore.text(`Total Score: ${scoreTotalFinal} / 100`);
+            $cityTwoScoresHeading.text(`Score out of 10`);
+            $cityTwoScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
 
             // highlight the winner city function
             // cityTwoTotalScore = scoreTotalFinal;
@@ -161,34 +170,29 @@ cityApp.displayCityInfo = (cityObject, i) => {
         // cityOneScoresArray = cityScoresArray;
     }
 
-
     // append 'choose different cities' button & ensure user can click it
     if (i === 0) {
-        const chooseDifferentCities = $('<button>').text('Choose Different Cities').addClass('different-cities-button');
-        $('#choose-different-cities').append(chooseDifferentCities);
+        const differentCitiesButton = $('<button>').text('Choose Different Cities').addClass('different-cities-button');
+        $chooseDifferentCities.append(differentCitiesButton);
     }
     cityApp.chooseDifferentCities();
 
     // cityApp.highlightWinner(cityOneTotalScore, cityTwoTotalScore, cityOneScoresArray, cityTwoScoresArray);
-    
 }
 
 
-
-// alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
+// (9) alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
 cityApp.resizeResults = () => {
     // REVIEW: i just moved this from the function above because it only worked on the initial printing of results and wouldn't change when the screen was resized after the fact... I will continue to play around with this after my appointment (after 3pm). Ill have to add/remove classes and call this fucntion in the above function somehow so the city scores are shown/hidden dynamically (might have to put inside an event listener: $(window).on("resize", resize); then call?)
-    
     if ($(window).width() < 480) {
-        $('#results-list-city-one').append(`<li>${cityScore.name}<br>${scoreValueFinal}</li>`);
-        $('#results-list-city-two').append(`<li>${cityScore.name}<br>${scoreValueFinal}</li>`);
+        $cityOneScores.append(`<li>${cityScore.name}<br>${scoreValueFinal}</li>`);
+        $cityTwoScores.append(`<li>${cityScore.name}<br>${scoreValueFinal}</li>`);
     }
     else {
-        $('#results-list-city-one').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
-        $('#results-list-city-two').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+        $cityOneScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+        $cityTwoScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
     }
 }
-
 
 
 // cityApp.highlightWinner = (cityOneTotalScore, cityTwoTotalScore, cityOneScoresArray, cityTwoScoresArray) => {
@@ -226,7 +230,6 @@ cityApp.resizeResults = () => {
 // }
 
 
-
 // (10) display city name and photo (a method that displays the city name and image on the user's screen
 cityApp.displayCityImage = (cityObject, i, cityName) => {
     const cityImage = cityObject.photos[0].image.mobile;
@@ -237,110 +240,71 @@ cityApp.displayCityImage = (cityObject, i, cityName) => {
     // a conditional that appends the name & image for city 1 and city 2 in separate divs
     if (i === 0) {
         const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
-        $("#results-image-city-one-container").append(cityOneImage);
-        $("#city-one-name").text(correctedCityName);
+        $cityOneImageContainer.append(cityOneImage);
+        $cityOneName.text(correctedCityName);
         
     }
     else {
         const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
-        $("#results-image-city-two-container").append(cityTwoImage);
-        $("#city-two-name").text(correctedCityName);
+        $cityTwoImageContainer.append(cityTwoImage);
+        $cityTwoName.text(correctedCityName);
     }
-
 }
-
 
 
 // (11) scroll function (a method to automatically bring users to results)
 cityApp.scrollToResults = () => {
     $('html').animate({
-        scrollTop: $('#results').offset().top
+        scrollTop: $results.offset().top
     }, 1000);
 }
 
 
-
 // (12) choose different cities (a method that removes appended content, scrolls to the top of the page, and allows users to search again)
 cityApp.chooseDifferentCities = () => {
-
     // listen for when the user clicks the 'compare different cities' button
     $('#choose-different-cities').on('click', function () {
-
-        console.log('CLICK!');
-
         // clear any appended content
         cityApp.reset();
 
         // empty both inputs & put focus back in first input field
-        $('#city-one').val('').focus();
-        $('#city-two').val('');
-
-        // remove button
-        // $('#choose-different-cities').empty();
-
+        $cityOneInput.val('').focus();
+        $cityTwoInput.val('');
     });
 }
-
 
 
 // (13) reset (a method that clears all appended content in the results section)
 cityApp.reset = () => {
     // remove all appended content
-    $('#results').removeClass('results-dynamic');
-    $('#results-container').removeClass('results-container-dynamic');
-    $("#city-one-name").empty();
-    $("#city-two-name").empty();
-    $('#results-list-category-titles').empty();
-    $('#results-list-city-one').empty();
-    $('#results-list-city-two').empty();
-    $('#total-score-city-one').empty();
-    $('#total-score-city-two').empty();
-    $('#choose-different-cities').empty();
-    $('#category-titles').empty();
-    $('#scores-heading-city-one').empty();
-    $('#scores-heading-city-two').empty();
-    $("#results-image-city-one-container").empty();
-    $("#results-image-city-two-container").empty();
-
-    // empty both inputs & put focus back in first input field
-    // $('#city-one').focus();
+    $results.removeClass('results-dynamic');
+    $resultsContainer.removeClass('results-container-dynamic');
+    $cityOneName.empty();
+    $cityTwoName.empty();
+    $scoreCategoryTitles.empty();
+    $cityOneScores.empty();
+    $cityTwoScores.empty();
+    $cityOneTotalScore.empty();
+    $cityTwoTotalScore.empty();
+    $chooseDifferentCities.empty();
+    $scoreCategoryTitles.empty();
+    $cityOneScoresHeading.empty();
+    $cityTwoScoresHeading.empty();
+    $cityOneImageContainer.empty();
+    $cityTwoImageContainer.empty();
 }
-
 
 
 // (2) initialization (a method that initializes the app)
 cityApp.init = () => {
-
     // put focus inside of the first input field upon page load
-    $('#city-one').focus();
-
+    $cityOneInput.focus();
+    // run form submit event listener
     cityApp.formSubmitEventListener();
 }
-
 
 
 // (1) document ready (a function that waits for the document to load)
 $(function () {
     cityApp.init();
 });
-
-
-
-
-
-
-
-
-// MVP GOALS
-    // (1) Landing page to welcome the user to the site & explain what the user can expect from it & how to use it
-    // (2) Allow user to input 2 different city names
-    // (3) Display between 10 - 15 categories, each with a score out of 10, to allow the user to compare the two cities
-    // (4) Display an icon with each category (ex: a house for 'rental')
-    // (5) add up & display the 'total score' for each city
-    // (6) include a 'search again' button to remove appended information & allow the user to search for new cities
-
-// STRETCH GOALS
-    // (1) have the icons transition to green or red depending on the score of city 1 vs city 2
-    // (2) give the user an option to 'save' one of the cities and enter a second new city to compare it to
-    // (3) allow users to compare up to 3 cities (minimum of 2 cities, maximum of 3 cities)
-    // (4) allow the user to assign different 'importance levels' to categories of their own choice
