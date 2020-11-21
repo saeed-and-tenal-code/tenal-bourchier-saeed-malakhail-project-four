@@ -31,26 +31,19 @@ cityApp.formSubmitEventListener = () => {
         // clear any appended results
         cityApp.reset();
 
-        // store the user's input values in variables
+        // store the user's input values in variables & format them to match the APIs required input (make them lower case & replace spaces with a dash, ex: New york -> new-york)
         const userCityOne = $cityOneInput.val();
         const userCityTwo = $cityTwoInput.val();
-
-        // format the input values to match the APIs required input (ensure inputs are lower case & that spaces are replaced with a dash, ex: New york -> new-york)
         const correctUserInputOne = $.trim(userCityOne.replace(/\b \b/g, '-')).toLowerCase();
         const correctUserInputTwo = $.trim(userCityTwo.replace(/\b \b/g, '-')).toLowerCase();
 
-        // (a) alert user if input is equal to an empty string
-        if (correctUserInputOne === '' || correctUserInputTwo === '') {
-            alert('Please ensure you enter a city name!');
-        }
-        // (b) alert user if the inputs are equal to each other
-        else if (correctUserInputOne === correctUserInputTwo) {
+        // alert user if the inputs are equal to each other, if they aren't then call API error handling function
+        if (correctUserInputOne === correctUserInputTwo) {
             alert('Please ensure you enter two different cities!');
         }
-
-        // call API error handling function
-        cityApp.apiErrorHandling(correctUserInputOne, correctUserInputTwo);
-        // cityApp.apiErrorHandling(correctUserInputTwo, 1);
+        else {
+            cityApp.apiErrorHandling(correctUserInputOne, correctUserInputTwo);
+        }
     });
 }
 
