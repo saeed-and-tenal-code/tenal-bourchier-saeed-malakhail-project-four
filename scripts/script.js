@@ -35,85 +35,42 @@ cityApp.formSubmitEventListener = () => {
         }
 
         // call API error handling function
-        cityApp.apiErrorHandling(correctUserInputOne, 0);
-        cityApp.apiErrorHandling(correctUserInputTwo, 1);
+        cityApp.apiErrorHandling(correctUserInputOne, correctUserInputTwo);
+        // cityApp.apiErrorHandling(correctUserInputTwo, 1);
     });
 }
 
 
 
 // (6) API error handling (a method that ensures the user's inputted city is available in the API)
-cityApp.apiErrorHandling = (userCity, index) => {
+cityApp.apiErrorHandling = (userCityOne, userCityTwo) => {
 
 
-    // // AJAX call for user's first city
-    // cityApp.getCityInfo(userCity)
+    $.ajax({
+        url: `https://api.teleport.org/api/urban_areas/slug:${userCityOne}/scores/`,
+        method: `GET`,
+        dataType: `json`
+    })
 
-    //     // (1a) if successful, then AJAX call for user's second city
-    //     .then(function (userCity) {
-    //         cityApp.getCityInfo(userCity)
+        // (1a) if successful, then AJAX call for user's second city
+        .then(function (cityObjectOne) {
 
-    //             // (2a) if successful, then AJAX call for both city's images
-    //             .then(function (userCity) {
-    //                 cityApp.getCityImage(userCity, index)
-
-    //                     // (3a) if successful, then display information
-    //                     .then(function (userCity) {
-    //                         cityApp.displayCityInfo(item, index);
-    //                         cityApp.displayCityImage(cityObject, index, userCity);
-    //                         cityApp.scrollToResults();
-    //                     })
-    //             })
-    //             // (2b) if unsuccessful, then alert user
-    //             .fail(function (userCity) {
-    //                 // alert the user 
-    //                 // clear any appended results
-    //                 cityApp.reset();
-    //             });
-
-    //     })
-    //     // (1b) if unsuccessful, then alert the user
-    //     .fail(function (userCity) {
-    //         // alert the user 
-    //         // clear any appended results
-    //         cityApp.reset();
-    //     });
-
-
-
-
-    // call the function that runs the AJAX call for city scores, then check to see if both cities are returned successfully (ie: ensure both cities are available in the API) 
-    $.when(cityApp.getCityInfo(userCity))
-
-            // if they both return successfully, then display the city information
-            .then(function (item) {
-
-                cityApp.displayCityInfo(item, index);
-
+            $.ajax({
+                url: `https://api.teleport.org/api/urban_areas/slug:${userCityTwo}/scores/`,
+                method: `GET`,
+                dataType: `json`
             })
+                // (2a) if successful, then AJAX call for both city's images
+                .then(function (cityObjectTwo) {
 
-            // if one or both of the cities are not returned successfully, then alert the user & do not display any city information
-            .fail(function (item) { 
-                // console.log(item);
+                    // (3a) if successful, then display information
+                    cityApp.getCityImage(userCityOne, userCityTwo);
 
-                // alert the user 
-                console.log(userCity);
+                    cityApp.displayCityInfo(cityObjectOne, 0);
+                    cityApp.displayCityInfo(cityObjectTwo, 1);
 
-                // clear any appended results
-                cityApp.reset();
-
-            });
-
-    // call the function that runs the AJAX call for city images
-    $.when (cityApp.getCityImage(userCity, index))
-
-        // then display the city image/name and bring the user to the results
-        .then(function (cityObject) {
-
-            cityApp.displayCityImage(cityObject, index, userCity);
-
-            cityApp.scrollToResults();
-
+                    cityApp.scrollToResults();
+                })
         })
 }
 
@@ -122,23 +79,72 @@ cityApp.apiErrorHandling = (userCity, index) => {
 // (7) AJAX city scores (a method that calls the API which returns an object containing city scores)
 cityApp.getCityInfo = function (cityName) {
 
-    return $.ajax({
-            url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
-            method: `GET`,
-            dataType: `json`
+    $.ajax({
+        url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
+        method: `GET`,
+        dataType: `json`
+    })
+
+        // (1a) if successful, then AJAX call for user's second city
+        .then(function (cityObject) {
+
+            $.ajax({
+                url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
+                method: `GET`,
+                dataType: `json`
+            })
+
+                // (2a) if successful, then AJAX call for both city's images
+                .then(function (userCity) {
+                    cityApp.getCityImage(userCity, index)
+
+                        // (3a) if successful, then display information
+                        .then(function (userCity) {
+                            cityApp.displayCityInfo(item, index);
+                            cityApp.displayCityImage(cityObject, index, userCity);
+                            cityApp.scrollToResults();
+                        })
+                })
+                // (2b) if unsuccessful, then alert user
+                .fail(function (userCity) {
+                    // alert the user 
+                    // clear any appended results
+                    cityApp.reset();
+                });
+
         })
+        // (1b) if unsuccessful, then alert the user
+        .fail(function (userCity) {
+            // alert the user 
+            // clear any appended results
+            cityApp.reset();
+        });
+
 }
 
 
 
 // (8) AJAX city image (a method that calls the API which returns an object containing the city image & name)
-cityApp.getCityImage = function (cityName) {
-
-    return $.ajax({
-        url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/images/`,
+cityApp.getCityImage = function (cityNameOne, cityNameTwo) {
+    // AJAX call for city one image
+    $.ajax({
+        url: `https://api.teleport.org/api/urban_areas/slug:${cityNameOne}/images/`,
         method: `GET`,
         dataType: `json`
-    });
+    })
+        .then((cityImageObject) => {
+            cityApp.displayCityImage(cityImageObject, 0, cityNameOne);
+        })
+
+    // AJAX call for city two image
+    $.ajax({
+        url: `https://api.teleport.org/api/urban_areas/slug:${cityNameTwo}/images/`,
+        method: `GET`,
+        dataType: `json`
+    })
+        .then((cityImageObject) => {
+            cityApp.displayCityImage(cityImageObject, 1, cityNameTwo);
+        })
 }
 
 
