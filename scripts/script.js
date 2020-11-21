@@ -79,8 +79,7 @@ cityApp.apiErrorHandling = (userCityOne, userCityTwo) => {
 
                     cityApp.getCityImage(userCityOne, userCityTwo);
 
-                    cityApp.displayCityScores(cityObjectOne, 0);
-                    cityApp.displayCityScores(cityObjectTwo, 1);
+                    cityApp.displayCityScores(cityObjectOne, cityObjectTwo);
 
                     cityApp.scrollToResults();
                 })
@@ -123,63 +122,121 @@ cityApp.getCityImage = function (cityNameOne, cityNameTwo) {
 
 
 // (8) display city scores (a method that displays the scores, icons, and category labels on the user's screen)
-cityApp.displayCityScores = (cityObject, i) => {
+cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
+
+    // extract all 17 categories scores list and saved them into a new array
+    const cityOneScoresArray = cityObjectOne.categories;
+    const cityTwoScoresArray = cityObjectTwo.categories;
 
     // add border & height to dynamic results
     $results.addClass('results-dynamic');
     $resultsContainer.addClass('results-container-dynamic');
 
-    const cityScoresArray = cityObject.categories;
-    // let cityOneTotalScore = 0;
-    // let cityTwoTotalScore = 0;
-    // let cityOneScoresArray = [];
-    // let cityTwoScoresArray = [];
+    // get city total scores and round them to one decimal place
+    const cityOneScoreTotalRaw = cityObjectOne.teleport_city_score;
+    const cityOneScoreTotalFinal = cityOneScoreTotalRaw.toFixed(1);
+    const cityTwoScoreTotalRaw = cityObjectTwo.teleport_city_score;
+    const cityTwoScoreTotalFinal = cityTwoScoreTotalRaw.toFixed(1);
 
-    cityScoresArray.map((cityScore) => {
+    // display city total score values and category heading title both lists 
+    $cityOneTotalScore.text(`Total Score: ${cityOneScoreTotalFinal} / 100`);
+    $cityOneScoresHeading.text(`Score out of 10`);
+    $cityTwoTotalScore.text(`Total Score: ${cityTwoScoreTotalFinal} / 100`);
+    $cityTwoScoresHeading.text(`Score out of 10`);
 
-        // round all score values to 1 decimal place
-        const scoreValueRaw = cityScore.score_out_of_10;
-        const scoreValueFinal = scoreValueRaw.toFixed(1);
-        const scoreTotalRaw = cityObject.teleport_city_score;
-        const scoreTotalFinal = scoreTotalRaw.toFixed(1);
-
-        // a conditional that appends scores for city 1 and city 2 in separate lists
+    // setup a for loop to track of each city object and append the appropriate content to the right lists
+    for (let i = 0; i <= 1; i++) {
+      
         if (i === 0) {
-            $cityOneTotalScore.text(`Total Score: ${scoreTotalFinal} / 100`);
-            $cityOneScoresHeading.text(`Score out of 10`);
-            $cityOneScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
-            $scoreCategoryTitles.append(`<li>${cityScore.name}</li>`);
+
+            cityOneScoresArray.map((cityScore) => {
+
+                // round all score values to 1 decimal place
+                const scoreValueRaw = cityScore.score_out_of_10;
+                const scoreValueFinal = scoreValueRaw.toFixed(1);
+
+                $cityOneScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+                $scoreCategoryTitles.append(`<li>${cityScore.name}</li>`);
+            })
+
+            // append 'choose different cities' button & ensure user can click it
+            const differentCitiesButton = $('<button>').text('Choose Different Cities').addClass('different-cities-button');
+            $chooseDifferentCities.append(differentCitiesButton);
         }
-        else {
-            $cityTwoTotalScore.text(`Total Score: ${scoreTotalFinal} / 100`);
-            $cityTwoScoresHeading.text(`Score out of 10`);
-            $cityTwoScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
 
-            // highlight the winner city function
-            // cityTwoTotalScore = scoreTotalFinal;
-            // cityTwoScoresArray = cityScoresArray;
-        } 
+        if (i === 1) {
 
-        // console.log('name of score:', cityScore.name);
-        // console.log('score rating:', cityScore.score_out_of_10);
-    });
+            cityTwoScoresArray.map((cityScore) => {
 
-    if (i === 0) {
-        // highlight the winner city function
-        // cityOneTotalScore = scoreTotalFinal;
-        // cityOneScoresArray = cityScoresArray;
+                // round all score values to 1 decimal place
+                const scoreValueRaw = cityScore.score_out_of_10;
+                const scoreValueFinal = scoreValueRaw.toFixed(1);
+
+                $cityTwoScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+            })
+        }
     }
 
-    // append 'choose different cities' button & ensure user can click it
-    if (i === 0) {
-        const differentCitiesButton = $('<button>').text('Choose Different Cities').addClass('different-cities-button');
-        $chooseDifferentCities.append(differentCitiesButton);
-    }
     cityApp.chooseDifferentCities();
 
-    // cityApp.highlightWinner(cityOneTotalScore, cityTwoTotalScore, cityOneScoresArray, cityTwoScoresArray);
+    cityApp.styleScores(cityOneScoresArray, cityTwoScoresArray, cityOneScoreTotalFinal, cityTwoScoreTotalFinal);
+
 }
 
+cityApp.styleScores = (cityOneScoresArray, cityTwoScoresArray, cityOneScoreTotalFinal, cityTwoScoreTotalFinal) => {
+
+    // STYLE the total city score values
+    if (cityOneScoreTotalFinal > cityTwoScoreTotalFinal) {
+        $cityOneTotalScore.css({ background: 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)', color: 'white' });
+
+        $cityTwoTotalScore.css({ background: 'linear-gradient(to left top, #ff0000, #f86800, #e79b00, #ccc600, #a8eb12)', color: 'white' });
+
+        // $cityOneTotalScore.css({background: 'green', color: 'white'});
+        // $cityTwoTotalScore.css({ background: 'red', color: 'white'});
+    }
+    else if (cityOneScoreTotalFinal < cityTwoScoreTotalFinal) {
+        $cityOneTotalScore.css({ background: 'linear-gradient(to left top, #ff0000, #f86800, #e79b00, #ccc600, #a8eb12)', color: 'white' });
+
+        $cityTwoTotalScore.css({ background: 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)', color: 'white' });
+
+        // $cityOneTotalScore.css({ background: 'red', color: 'white'});
+        // $cityTwoTotalScore.css({ background: 'green', color: 'white' });
+    }
+    else {
+        $cityOneTotalScore.css({ background: 'purple', color: 'white' });
+        $cityTwoTotalScore.css({ background: 'purple', color: 'white' });
+    }
+
+    // STYLE the individual scores from all 17 categories  
+    for (let i = 0; i <= 16; i++) {
+
+        if (cityOneScoresArray[i].score_out_of_10 > cityTwoScoresArray[i].score_out_of_10) {
+
+            const $cityOneScoreList = $(`#results-list-city-one > li:nth-child(${i + 1})`);
+            $cityOneScoreList.css({ color: 'green' });
+
+            const $cityTwoScoreList = $(`#results-list-city-two > li:nth-child(${i + 1})`);
+            $cityTwoScoreList.css({ color: 'red' });
+        }
+
+        else if (cityOneScoresArray[i].score_out_of_10 < cityTwoScoresArray[i].score_out_of_10) {
+
+            const $cityOneScoreList = $(`#results-list-city-one > li:nth-child(${i + 1})`);
+            $cityOneScoreList.css({ color: 'red' });
+
+            const $cityTwoScoreList = $(`#results-list-city-two > li:nth-child(${i + 1})`);
+            $cityTwoScoreList.css({ color: 'green' });
+        }
+        else {
+            // give a neutral color of purple if both score values are the same!
+            const $cityOneScoreList = $(`#results-list-city-one > li:nth-child(${i + 1})`);
+            $cityOneScoreList.css({ color: 'purple' });
+
+            const $cityTwoScoreList = $(`#results-list-city-two > li:nth-child(${i + 1})`);
+            $cityTwoScoreList.css({ color: 'purple' });
+        }
+    }
+}
 
 // (9) alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
 cityApp.resizeResults = () => {
@@ -195,39 +252,6 @@ cityApp.resizeResults = () => {
 }
 
 
-// cityApp.highlightWinner = (cityOneTotalScore, cityTwoTotalScore, cityOneScoresArray, cityTwoScoresArray) => {
-
-//     console.log('city one:', cityOneTotalScore);
-//     console.log(cityTwoTotalScore);
-
-//     if (cityOneTotalScore > cityTwoTotalScore) {
-//         $('#total-score-city-one').css({color: 'green'});
-//         $('#total-score-city-two').css({color: 'red' });
-//     }
-//     else if (cityOneTotalScore < cityTwoTotalScore) {
-//         $('#total-score-city-one').css({ color: 'red' });
-//         $('#total-score-city-two').css({ color: 'green' });
-//     }
-//     else {
-//         $('#total-score-city-one').css({ color: 'yellow' });
-//         $('#total-score-city-two').css({ color: 'yellow' });
-//     }
-
-//     for (let i = 0; i < cityOneScoresArray.length; i++) {
-        
-//         if (cityOneScoresArray[i] > cityTwoScoresArray[i]) {
-
-//         }
-//         else if (cityOneScoresArray[i] < cityTwoScoresArray[i]) {
-
-//         }
-//         else {
-
-//         }
-        
-//     }
-
-// }
 
 
 // (10) display city name and photo (a method that displays the city name and image on the user's screen
