@@ -428,7 +428,17 @@ form button:hover, form button:focus, form button:active {
 .results-container div.results-list p {
   font-family: "Roboto", sans-serif;
   font-size: 2rem;
-  margin: 15px 0;
+  font-weight: 700;
+}
+
+.results-container div.results-list p.total-score-title {
+  margin: 25px 0 5px 0;
+  font-style: italic;
+}
+
+.results-container div.results-list p.total-score-value {
+  margin-bottom: 15px;
+  font-family: "Domine", serif;
 }
 
 .results-container div.results-list h3 {

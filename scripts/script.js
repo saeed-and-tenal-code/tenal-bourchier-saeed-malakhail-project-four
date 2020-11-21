@@ -11,6 +11,7 @@ const $cityOneName = $("#city-one-name");
 const $cityTwoName = $("#city-two-name");
 const $cityOneImageContainer = $("#results-image-city-one-container");
 const $cityTwoImageContainer = $("#results-image-city-two-container");
+const $totalScoreTitle = $('.total-score-title');
 const $cityOneTotalScore = $('#total-score-city-one');
 const $cityTwoTotalScore = $('#total-score-city-two');
 const $cityOneScoresHeading = $('#scores-heading-city-one');
@@ -122,9 +123,10 @@ cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
     const cityTwoScoreTotalFinal = cityTwoScoreTotalRaw.toFixed(1);
     
     // display city total score values and category heading title both lists 
-    $cityOneTotalScore.text(`Total Score: ${cityOneScoreTotalFinal} / 100`);
+    $totalScoreTitle.text(`Total Score`);
+    $cityOneTotalScore.text(`${cityOneScoreTotalFinal} / 100`);
     $cityOneScoresHeading.text(`Score out of 10`);
-    $cityTwoTotalScore.text(`Total Score: ${cityTwoScoreTotalFinal} / 100`);
+    $cityTwoTotalScore.text(`${cityTwoScoreTotalFinal} / 100`);
     $cityTwoScoresHeading.text(`Score out of 10`);
 
     // setup a for loop to track of each city object and append the appropriate content to the right lists
@@ -190,24 +192,24 @@ cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
 cityApp.styleScores = (cityOneScoresArray, cityTwoScoresArray, cityOneScoreTotalFinal, cityTwoScoreTotalFinal) => {
     // STYLE the total city score values
     if (cityOneScoreTotalFinal > cityTwoScoreTotalFinal) {
-        $cityOneTotalScore.css({ background: 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)', color: 'white' });
+        $cityOneTotalScore.css({ color: 'green'});
 
-        $cityTwoTotalScore.css({ background: 'linear-gradient(to left top, #ff0000, #f86800, #e79b00, #ccc600, #a8eb12)', color: 'white' });
+        $cityTwoTotalScore.css({ color: 'red'});
 
         // $cityOneTotalScore.css({background: 'green', color: 'white'});
         // $cityTwoTotalScore.css({ background: 'red', color: 'white'});
     }
     else if (cityOneScoreTotalFinal < cityTwoScoreTotalFinal) {
-        $cityOneTotalScore.css({ background: 'linear-gradient(to left top, #ff0000, #f86800, #e79b00, #ccc600, #a8eb12)', color: 'white' });
+        $cityOneTotalScore.css({ color: 'red'});
 
-        $cityTwoTotalScore.css({ background: 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)', color: 'white' });
+        $cityTwoTotalScore.css({ color: 'green'});
 
         // $cityOneTotalScore.css({ background: 'red', color: 'white'});
         // $cityTwoTotalScore.css({ background: 'green', color: 'white' });
     }
     else {
-        $cityOneTotalScore.css({ background: 'purple', color: 'white' });
-        $cityTwoTotalScore.css({ background: 'purple', color: 'white' });
+        $cityOneTotalScore.css({ color: 'purple'});
+        $cityTwoTotalScore.css({ color: 'purple'});
     }
 
     // STYLE the individual scores from all 17 categories  
