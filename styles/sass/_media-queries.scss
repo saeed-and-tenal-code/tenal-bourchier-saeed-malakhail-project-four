@@ -5,7 +5,15 @@
 
 /* MAJOR BREAKPOINT 1: small desktop & portrait tablet */
 @media (max-width: 940px) {
-    // HEADER
+    // RESULTS
+    .results-container {
+        padding: 25px 25px;
+            div.results-list {
+                p {
+                    font-size: 1.7rem;
+                }
+            }
+    }
 }
 
 /* MAJOR BREAKPOINT 2: portrait tablet & landscape phone */
@@ -27,6 +35,22 @@
             }
             input.second-input {
                 margin-bottom: 20px;
+            }
+    }
+
+    // RESULTS
+    .results-container {
+        padding: 25px 20px;
+            div.results-list {
+                h2 {
+                    font-size: 2rem;
+                }
+                h3 {
+                    font-size: 1.5rem;
+                }
+                li {
+                    font-size: 1.5rem;
+                }
             }
     }
 }
@@ -53,6 +77,17 @@
         input.second-input {
             margin-bottom: 20px;
         }
+    }
+
+    // RESULTS
+    .results-container {
+        padding: 25px 20px;
+            div.category-titles {
+                display: none;
+            }
+            div.category-scores {
+                width: 50%;
+            }
     }
 
     // FOOTER

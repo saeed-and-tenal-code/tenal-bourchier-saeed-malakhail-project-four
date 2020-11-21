@@ -7,18 +7,19 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    // height: 0vh;
+    padding: 25px 50px;
         div.results-list {
             text-align: center;
+            border: 1px solid red;
                 h2 {
                     font-size: 3rem;
                     text-transform: uppercase;
                 }
-                h3 {
+                p {
                     font-size: 2rem;
                     margin: 15px 0;
                 }
-                h4 {
+                h3 {
                     font-size: 2rem;
                     margin: 15px 0;
                     font-style: italic;
@@ -29,7 +30,10 @@
                 }
         }
         div.category-titles {
-            min-width: 300px;
+            width: 40%;
+        }
+        div.category-scores {
+            width: 30%;
         }
 }
 
@@ -63,7 +67,7 @@
 }
 
 .results-container-dynamic {
-    padding: 25px 50px;
+    // padding: 25px 50px;
     margin: 50px 0 25px 0;
     border: 5px solid transparent;
     border-image: linear-gradient(black, rgb(241, 239, 239));

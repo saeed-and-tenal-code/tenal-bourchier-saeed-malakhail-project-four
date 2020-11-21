@@ -408,10 +408,12 @@ form button:hover, form button:focus, form button:active {
   -webkit-box-align: end;
       -ms-flex-align: end;
           align-items: flex-end;
+  padding: 25px 50px;
 }
 
 .results-container div.results-list {
   text-align: center;
+  border: 1px solid red;
 }
 
 .results-container div.results-list h2 {
@@ -419,12 +421,12 @@ form button:hover, form button:focus, form button:active {
   text-transform: uppercase;
 }
 
-.results-container div.results-list h3 {
+.results-container div.results-list p {
   font-size: 2rem;
   margin: 15px 0;
 }
 
-.results-container div.results-list h4 {
+.results-container div.results-list h3 {
   font-size: 2rem;
   margin: 15px 0;
   font-style: italic;
@@ -436,7 +438,11 @@ form button:hover, form button:focus, form button:active {
 }
 
 .results-container div.category-titles {
-  min-width: 300px;
+  width: 40%;
+}
+
+.results-container div.category-scores {
+  width: 30%;
 }
 
 .different-cities-button {
@@ -475,7 +481,6 @@ form button:hover, form button:focus, form button:active {
 }
 
 .results-container-dynamic {
-  padding: 25px 50px;
   margin: 50px 0 25px 0;
   border: 5px solid transparent;
   -o-border-image: linear-gradient(black, #f1efef);
@@ -488,6 +493,15 @@ form button:hover, form button:focus, form button:active {
 
 /* MINOR BREAKPOINT 1: large desktops */
 /* MAJOR BREAKPOINT 1: small desktop & portrait tablet */
+@media (max-width: 940px) {
+  .results-container {
+    padding: 25px 25px;
+  }
+  .results-container div.results-list p {
+    font-size: 1.7rem;
+  }
+}
+
 /* MAJOR BREAKPOINT 2: portrait tablet & landscape phone */
 @media (max-width: 768px) {
   header .header-container h1 {
@@ -504,6 +518,18 @@ form button:hover, form button:focus, form button:active {
   }
   .form-container input.second-input {
     margin-bottom: 20px;
+  }
+  .results-container {
+    padding: 25px 20px;
+  }
+  .results-container div.results-list h2 {
+    font-size: 2rem;
+  }
+  .results-container div.results-list h3 {
+    font-size: 1.5rem;
+  }
+  .results-container div.results-list li {
+    font-size: 1.5rem;
   }
 }
 
@@ -525,6 +551,15 @@ form button:hover, form button:focus, form button:active {
   }
   .form-container input.second-input {
     margin-bottom: 20px;
+  }
+  .results-container {
+    padding: 25px 20px;
+  }
+  .results-container div.category-titles {
+    display: none;
+  }
+  .results-container div.category-scores {
+    width: 50%;
   }
   footer div p {
     font-size: 1.2rem;
