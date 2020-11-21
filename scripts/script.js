@@ -146,7 +146,7 @@ cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
 
     // setup a for loop to track of each city object and append the appropriate content to the right lists
     for (let i = 0; i <= 1; i++) {
-      
+    
         if (i === 0) {
 
             cityOneScoresArray.map((cityScore) => {
@@ -155,8 +155,16 @@ cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
                 const scoreValueRaw = cityScore.score_out_of_10;
                 const scoreValueFinal = scoreValueRaw.toFixed(1);
 
-                $cityOneScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+                $cityOneScores.append(`<li><span class="sr-only dynamic-category-titles">${cityScore.name}: <br></span>${scoreValueFinal}</li>`);
                 $scoreCategoryTitles.append(`<li>${cityScore.name}</li>`);
+
+                // alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
+                if ($(window).width() < 480) {
+                    $('.dynamic-category-titles').removeClass('sr-only');
+                }
+                else {
+                    $('.dynamic-category-titles').addClass('sr-only');
+                }
             })
 
             // append 'choose different cities' button & ensure user can click it
@@ -172,7 +180,15 @@ cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
                 const scoreValueRaw = cityScore.score_out_of_10;
                 const scoreValueFinal = scoreValueRaw.toFixed(1);
 
-                $cityTwoScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+                $cityTwoScores.append(`<li><span class="sr-only dynamic-category-titles">${cityScore.name}: <br></span>${scoreValueFinal}</li>`);
+
+                // alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
+                if ($(window).width() < 480) {
+                    $('.dynamic-category-titles').removeClass('sr-only');
+                }
+                else {
+                    $('.dynamic-category-titles').addClass('sr-only');
+                }
             })
         }
     }
@@ -238,17 +254,18 @@ cityApp.styleScores = (cityOneScoresArray, cityTwoScoresArray, cityOneScoreTotal
     }
 }
 
+
 // (9) alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
 cityApp.resizeResults = () => {
-    // REVIEW: i just moved this from the function above because it only worked on the initial printing of results and wouldn't change when the screen was resized after the fact... I will continue to play around with this after my appointment (after 3pm). Ill have to add/remove classes and call this fucntion in the above function somehow so the city scores are shown/hidden dynamically (might have to put inside an event listener: $(window).on("resize", resize); then call?)
-    if ($(window).width() < 480) {
-        $cityOneScores.append(`<li>${cityScore.name}<br>${scoreValueFinal}</li>`);
-        $cityTwoScores.append(`<li>${cityScore.name}<br>${scoreValueFinal}</li>`);
-    }
-    else {
-        $cityOneScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
-        $cityTwoScores.append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
-    }
+
+    $(window).on("resize", () => {
+        if ($(window).width() < 480) {
+            $('.dynamic-category-titles').removeClass('sr-only');
+        }
+        else {
+            $('.dynamic-category-titles').addClass('sr-only');
+        }
+    }) 
 }
 
 
@@ -323,8 +340,9 @@ cityApp.reset = () => {
 cityApp.init = () => {
     // put focus inside of the first input field upon page load
     $cityOneInput.focus();
-    // run form submit event listener
+    // run form submit event listener & resize results methods
     cityApp.formSubmitEventListener();
+    cityApp.resizeResults();
 }
 
 
