@@ -12,6 +12,7 @@ header {
             flex-direction: column;
             align-items: center;
                 h1 {
+                    font-family: $heading-font;
                     font-size: 8rem;
                     text-transform: uppercase;
                     color: $font-secondary;
@@ -38,6 +39,8 @@ header {
     align-items: center;
         p {
             font-size: 2rem;
+            font-family: $body-font;
+            line-height: 3rem;
         }
 }
 
@@ -45,6 +48,7 @@ form {
     width: 100%;
     font-size: 1.7rem;
         input {
+            font-family: $body-font;
             width: calc(100% / 2 - 40px);
             height: 35px;
             margin: 20px 5px 15px 5px;
@@ -55,6 +59,7 @@ form {
                 }
         }
         button {
+            font-family: $heading-font;
             border: none;
             background-color: $primary-colour;
             width: 130px;

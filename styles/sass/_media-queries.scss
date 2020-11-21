@@ -49,6 +49,22 @@
                     font-size: 1.5rem;
                 }
                 li {
+                    font-size: 1.9rem;
+                }
+            }
+    }
+}
+
+/* MINOR BREAKPOINT 1 */
+@media (max-width: 606px) {
+    // RESULTS
+    .results-container {
+        padding: 25px 15px;
+            div.results-list {
+                h2 {
+                    font-size: 1.6rem;
+                }
+                li {
                     font-size: 1.5rem;
                 }
             }
@@ -70,6 +86,10 @@
     min-height: 260px;
     width: 280px;
     margin-bottom: 80px;
+        p {
+            font-size: 1.5rem;
+            line-height: 2.5rem;
+        }
         input {
             width: 85%;
             margin: 20px 5px 0 5px;
@@ -82,7 +102,15 @@
     // RESULTS
     .results-container {
         padding: 25px 10px;
-            div.category-titles {
+        div.results-list {
+            p {
+                font-size: 1.5rem;
+            }
+            li {
+                font-size: 2rem;
+            }
+        }    
+        div.category-titles {
                 display: none;
             }
             div.category-scores {
@@ -92,6 +120,10 @@
                 margin-right: 10px;
             }
     }
+
+.dynamic-category-titles {
+    font-size: 1.5rem;
+}
 
     // FOOTER
     footer div p {
