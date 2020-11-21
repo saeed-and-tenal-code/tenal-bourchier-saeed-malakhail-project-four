@@ -128,10 +128,13 @@ cityApp.displayCityInfo = (cityObject, i) => {
         // a conditional that appends scores for city 1 and city 2 in separate lists
         if (i === 0) {
             $('#total-score-city-one').text(`Total Score: ${scoreTotalFinal} / 100`);
+            $('#scores-heading-city-one').text(`Score out of 10`);
             $('#results-list-city-one').append(`<li>${scoreValueFinal}</li>`); 
+            $('#category-titles').text(`Category Titles`); 
             $('#results-list-category-titles').append(`<li>${cityScore.name}</li>`);
         }
         else {
+            $('#scores-heading-city-two').text(`Score out of 10`);
             $('#total-score-city-two').text(`Total Score: ${scoreTotalFinal} / 100`);
             $('#results-list-city-two').append(`<li>${scoreValueFinal}</li>`);
         } 
@@ -218,6 +221,9 @@ cityApp.reset = () => {
     $('#total-score-city-one').empty();
     $('#total-score-city-two').empty();
     $('#choose-different-cities').empty();
+    $('#category-titles').empty();
+    $('#scores-heading-city-one').empty();
+    $('#scores-heading-city-two').empty();
     $("#results-image-city-one-container").empty();
     $("#results-image-city-two-container").empty();
 

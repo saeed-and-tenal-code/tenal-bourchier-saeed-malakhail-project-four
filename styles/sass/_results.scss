@@ -18,6 +18,11 @@
                     font-size: 2rem;
                     margin: 15px 0;
                 }
+                h4 {
+                    font-size: 2rem;
+                    margin: 15px 0;
+                    font-style: italic;
+                }
                 li {
                     font-size: 2rem;
                     padding: 5px 0;
@@ -36,12 +41,13 @@
     font-size: 1.7rem;
     margin-bottom: 50px;
     padding: 10px 15px;
-    box-shadow: 0 2px 5px black;
+    box-shadow: 0 2px 7px black;
     text-transform: uppercase;
     // font-weight: bold;
     transition: all 0.3s ease;
         &:hover,
-        &:focus {
+        &:focus,
+        &:active {
             background-color: #FC9730;
             color: black;
             cursor: pointer;
