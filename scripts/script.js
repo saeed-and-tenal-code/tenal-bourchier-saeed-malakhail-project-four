@@ -8,7 +8,7 @@ const cityApp = {};
 
 
 // (5) form submit event listener (a method that, upon form submit, prevents the default form behaviour, stores the user's inputs, and ensures the user a) hasn't submitted an empty input field, and b) has inputted two different cities)
-cityApp.formSubmitEvenListener = () => {
+cityApp.formSubmitEventListener = () => {
 
     // listen for the user to submit the form
     $('form').on('submit', function (event) {
@@ -22,8 +22,6 @@ cityApp.formSubmitEvenListener = () => {
         const userCityTwo = $('#city-two').val();
 
         // format the input values to match the APIs required input (ensure inputs are lower case & that spaces are replaced with a dash, ex: New york -> new-york)
-            // REVIEW: 
-            // (3) add reverse of below to modify user inputs in DISPLAY method
         const correctUserInputOne = $.trim(userCityOne.replace(/\b \b/g, '-')).toLowerCase();
         const correctUserInputTwo = $.trim(userCityTwo.replace(/\b \b/g, '-')).toLowerCase();
 
@@ -37,15 +35,52 @@ cityApp.formSubmitEvenListener = () => {
         }
 
         // call API error handling function
-        cityApp.formSubmitErrorHandling(correctUserInputOne, 0);
-        cityApp.formSubmitErrorHandling(correctUserInputTwo, 1);
+        cityApp.apiErrorHandling(correctUserInputOne, 0);
+        cityApp.apiErrorHandling(correctUserInputTwo, 1);
     });
 }
 
 
 
 // (6) API error handling (a method that ensures the user's inputted city is available in the API)
-cityApp.formSubmitErrorHandling = (userCity, index) => {
+cityApp.apiErrorHandling = (userCity, index) => {
+
+
+    // // AJAX call for user's first city
+    // cityApp.getCityInfo(userCity)
+
+    //     // (1a) if successful, then AJAX call for user's second city
+    //     .then(function (userCity) {
+    //         cityApp.getCityInfo(userCity)
+
+    //             // (2a) if successful, then AJAX call for both city's images
+    //             .then(function (userCity) {
+    //                 cityApp.getCityImage(userCity, index)
+
+    //                     // (3a) if successful, then display information
+    //                     .then(function (userCity) {
+    //                         cityApp.displayCityInfo(item, index);
+    //                         cityApp.displayCityImage(cityObject, index, userCity);
+    //                         cityApp.scrollToResults();
+    //                     })
+    //             })
+    //             // (2b) if unsuccessful, then alert user
+    //             .fail(function (userCity) {
+    //                 // alert the user 
+    //                 // clear any appended results
+    //                 cityApp.reset();
+    //             });
+
+    //     })
+    //     // (1b) if unsuccessful, then alert the user
+    //     .fail(function (userCity) {
+    //         // alert the user 
+    //         // clear any appended results
+    //         cityApp.reset();
+    //     });
+
+
+
 
     // call the function that runs the AJAX call for city scores, then check to see if both cities are returned successfully (ie: ensure both cities are available in the API) 
     $.when(cityApp.getCityInfo(userCity))
@@ -91,7 +126,7 @@ cityApp.getCityInfo = function (cityName) {
             url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
             method: `GET`,
             dataType: `json`
-        });
+        })
 }
 
 
@@ -142,14 +177,11 @@ cityApp.displayCityInfo = (cityObject, i) => {
         // console.log('score rating:', cityScore.score_out_of_10);
     });
 
-
-    // append 'choose different cities' button
+    // append 'choose different cities' button & ensure user can click it
     if (i === 0) {
         const chooseDifferentCities = $('<button>').text('Choose Different Cities').addClass('different-cities-button');
         $('#choose-different-cities').append(chooseDifferentCities);
     }
-
-    // ensure user can click 'choose different cities' button
     cityApp.chooseDifferentCities();
 }
 
@@ -239,7 +271,7 @@ cityApp.init = () => {
     // put focus inside of the first input field upon page load
     $('#city-one').focus();
 
-    cityApp.formSubmitEvenListener();
+    cityApp.formSubmitEventListener();
 }
 
 

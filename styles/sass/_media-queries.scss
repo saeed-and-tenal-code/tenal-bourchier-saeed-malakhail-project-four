@@ -1,22 +1,62 @@
 /* MINOR BREAKPOINT 1: large desktops */
-@media (min-width: 1400px) {
+@media (min-width: 1450px) {
     // HEADER
 }
 
 /* MAJOR BREAKPOINT 1: small desktop & portrait tablet */
 @media (max-width: 940px) {
     // HEADER
-
 }
 
 /* MAJOR BREAKPOINT 2: portrait tablet & landscape phone */
 @media (max-width: 768px) {
     // HEADER
+    header .header-container {
+        h1 {
+            font-size: 7rem;
+            width: 335px;
+        }
+    }
 
+    .form-container {
+        min-height: 260px;
+        width: 420px;
+            input {
+                width: 60%;
+                margin: 20px 5px 0 5px;
+            }
+            input.second-input {
+                margin-bottom: 20px;
+            }
+    }
 }
 
 /* MAJOR BREAKPOINT 3: landscape phone & down */
 @media (max-width: 480px) {
     // HEADER
+    header .header-container {
+        h1 {
+            font-size: 5rem;
+            width: 240px;
+            margin-bottom: 75px;
+        }
+    }
 
+    .form-container {
+    min-height: 260px;
+    width: 280px;
+    margin-bottom: 80px;
+        input {
+            width: 85%;
+            margin: 20px 5px 0 5px;
+        }
+        input.second-input {
+            margin-bottom: 20px;
+        }
+    }
+
+    // FOOTER
+    footer div p {
+        font-size: 1.2rem;
+    }
 }
