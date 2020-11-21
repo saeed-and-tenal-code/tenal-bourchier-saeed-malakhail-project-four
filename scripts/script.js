@@ -45,7 +45,7 @@ cityApp.formSubmitEventListener = () => {
 // (6) API error handling (a method that ensures the user's inputted city is available in the API)
 cityApp.apiErrorHandling = (userCityOne, userCityTwo) => {
 
-
+    // AJAX call for city one
     $.ajax({
         url: `https://api.teleport.org/api/urban_areas/slug:${userCityOne}/scores/`,
         method: `GET`,
@@ -60,10 +60,9 @@ cityApp.apiErrorHandling = (userCityOne, userCityTwo) => {
                 method: `GET`,
                 dataType: `json`
             })
-                // (2a) if successful, then AJAX call for both city's images
+                // (2a) if successful, then AJAX call for both city's images, display city info and bring user to results
                 .then(function (cityObjectTwo) {
 
-                    // (3a) if successful, then display information
                     cityApp.getCityImage(userCityOne, userCityTwo);
 
                     cityApp.displayCityInfo(cityObjectOne, 0);
@@ -71,60 +70,69 @@ cityApp.apiErrorHandling = (userCityOne, userCityTwo) => {
 
                     cityApp.scrollToResults();
                 })
+                // (2b) if unsuccessful, then alert the user!
+                .fail(function () {
+                    alert(`Sorry, looks like ${userCityTwo} isn't in our database! Please try another search.`);
+                })
         })
+        // (1b) if unsuccessful, then alert the user!
+        .fail(function () {
+            alert(`Sorry, looks like ${userCityOne} isn't in our database! Please try another search.`);
+        } )
 }
 
 
 
 // (7) AJAX city scores (a method that calls the API which returns an object containing city scores)
-cityApp.getCityInfo = function (cityName) {
+// cityApp.getCityInfo = function (cityName) {
 
-    $.ajax({
-        url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
-        method: `GET`,
-        dataType: `json`
-    })
+//     $.ajax({
+//         url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
+//         method: `GET`,
+//         dataType: `json`
+//     })
 
-        // (1a) if successful, then AJAX call for user's second city
-        .then(function (cityObject) {
+//         // (1a) if successful, then AJAX call for user's second city
+//         .then(function (cityObject) {
 
-            $.ajax({
-                url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
-                method: `GET`,
-                dataType: `json`
-            })
+//             $.ajax({
+//                 url: `https://api.teleport.org/api/urban_areas/slug:${cityName}/scores/`,
+//                 method: `GET`,
+//                 dataType: `json`
+//             })
 
-                // (2a) if successful, then AJAX call for both city's images
-                .then(function (userCity) {
-                    cityApp.getCityImage(userCity, index)
+//                 // (2a) if successful, then AJAX call for both city's images
+//                 .then(function (userCity) {
+//                     cityApp.getCityImage(userCity, index)
 
-                        // (3a) if successful, then display information
-                        .then(function (userCity) {
-                            cityApp.displayCityInfo(item, index);
-                            cityApp.displayCityImage(cityObject, index, userCity);
-                            cityApp.scrollToResults();
-                        })
-                })
-                // (2b) if unsuccessful, then alert user
-                .fail(function (userCity) {
-                    // alert the user 
-                    // clear any appended results
-                    cityApp.reset();
-                });
+//                         // (3a) if successful, then display information
+//                         .then(function (userCity) {
+//                             cityApp.displayCityInfo(item, index);
+//                             cityApp.displayCityImage(cityObject, index, userCity);
+//                             cityApp.scrollToResults();
+//                         })
+//                 })
+//                 // (2b) if unsuccessful, then alert user
+//                 .fail(function (userCity) {
+//                     // alert the user 
+//                     // clear any appended results
+//                     cityApp.reset();
+//                 });
 
-        })
-        // (1b) if unsuccessful, then alert the user
-        .fail(function (userCity) {
-            // alert the user 
-            // clear any appended results
-            cityApp.reset();
-        });
+//         })
+//         // (1b) if unsuccessful, then alert the user
+//         .fail(function (userCity) {
+//             // alert the user 
+//             // clear any appended results
+//             cityApp.reset();
+//         });
 
-}
+// }
 
 
 
 // (8) AJAX city image (a method that calls the API which returns an object containing the city image & name)
+
 cityApp.getCityImage = function (cityNameOne, cityNameTwo) {
     // AJAX call for city one image
     $.ajax({
@@ -157,6 +165,10 @@ cityApp.displayCityInfo = (cityObject, i) => {
     $('#results-container').addClass('results-container-dynamic');
 
     const cityScoresArray = cityObject.categories;
+    let cityOneTotalScore = 0;
+    let cityTwoTotalScore = 0;
+    let cityOneScoresArray = [];
+    let cityTwoScoresArray = [];
 
     cityScoresArray.map((cityScore) => {
 
@@ -164,7 +176,7 @@ cityApp.displayCityInfo = (cityObject, i) => {
         const scoreValueRaw = cityScore.score_out_of_10;
         const scoreValueFinal = scoreValueRaw.toFixed(1);
         const scoreTotalRaw = cityObject.teleport_city_score;
-        const scoreTotalFinal = scoreTotalRaw.toFixed(1)
+        const scoreTotalFinal = scoreTotalRaw.toFixed(1);
 
         // a conditional that appends scores for city 1 and city 2 in separate lists
         if (i === 0) {
@@ -173,15 +185,30 @@ cityApp.displayCityInfo = (cityObject, i) => {
             $('#results-list-city-one').append(`<li>${scoreValueFinal}</li>`); 
             $('#category-titles').text(`Category Titles`); 
             $('#results-list-category-titles').append(`<li>${cityScore.name}</li>`);
+
+            
+
         }
         else {
             $('#scores-heading-city-two').text(`Score out of 10`);
             $('#total-score-city-two').text(`Total Score: ${scoreTotalFinal} / 100`);
             $('#results-list-city-two').append(`<li>${scoreValueFinal}</li>`);
+
+            // highlight the winner city function
+            cityTwoTotalScore = scoreTotalFinal;
+            cityTwoScoresArray = cityScoresArray;
         } 
+
         // console.log('name of score:', cityScore.name);
         // console.log('score rating:', cityScore.score_out_of_10);
     });
+
+    if (i === 0) {
+        // highlight the winner city function
+        cityOneTotalScore = scoreTotalFinal;
+        cityOneScoresArray = cityScoresArray;
+    }
+
 
     // append 'choose different cities' button & ensure user can click it
     if (i === 0) {
@@ -189,25 +216,62 @@ cityApp.displayCityInfo = (cityObject, i) => {
         $('#choose-different-cities').append(chooseDifferentCities);
     }
     cityApp.chooseDifferentCities();
+
+    cityApp.highlightWinner(cityOneTotalScore, cityTwoTotalScore, cityOneScoresArray, cityTwoScoresArray);
+    
 }
 
+cityApp.highlightWinner = (cityOneTotalScore, cityTwoTotalScore, cityOneScoresArray, cityTwoScoresArray) => {
 
+    console.log('city one:', cityOneTotalScore);
+    console.log(cityTwoTotalScore);
 
+    if (cityOneTotalScore > cityTwoTotalScore) {
+        $('#total-score-city-one').css({color: 'green'});
+        $('#total-score-city-two').css({color: 'red' });
+    }
+    else if (cityOneTotalScore < cityTwoTotalScore) {
+        $('#total-score-city-one').css({ color: 'red' });
+        $('#total-score-city-two').css({ color: 'green' });
+    }
+    else {
+        $('#total-score-city-one').css({ color: 'yellow' });
+        $('#total-score-city-two').css({ color: 'yellow' });
+    }
+
+    for (let i = 0; i < cityOneScoresArray.length; i++) {
+        
+        if (cityOneScoresArray[i] > cityTwoScoresArray[i]) {
+
+        }
+        else if (cityOneScoresArray[i] < cityTwoScoresArray[i]) {
+
+        }
+        else {
+
+        }
+        
+    }
+
+}
 // (10) display city name and photo (a method that displays the city name and image on the user's screen
 cityApp.displayCityImage = (cityObject, i, cityName) => {
     const cityImage = cityObject.photos[0].image.mobile;
 
+    // replaced city names with hypens with an empty space
+    const correctedCityName = $.trim(cityName.replace(/-/g, ' '));
+
     // a conditional that appends the name & image for city 1 and city 2 in separate divs
     if (i === 0) {
-        const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`).css({ margin: '0 0 15px 0' });
+        const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
         $("#results-image-city-one-container").append(cityOneImage);
-        $("#city-one-name").text(cityName);
+        $("#city-one-name").text(correctedCityName);
         
     }
     else {
-        const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${cityName}`).css({ margin: '0 0 15px 0' });
+        const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
         $("#results-image-city-two-container").append(cityTwoImage);
-        $("#city-two-name").text(cityName);
+        $("#city-two-name").text(correctedCityName);
     }
 
 }
