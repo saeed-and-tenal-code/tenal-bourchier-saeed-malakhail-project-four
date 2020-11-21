@@ -79,8 +79,8 @@ cityApp.apiErrorHandling = (userCityOne, userCityTwo) => {
 
                     cityApp.getCityImage(userCityOne, userCityTwo);
 
-                    cityApp.displayCityInfo(cityObjectOne, 0);
-                    cityApp.displayCityInfo(cityObjectTwo, 1);
+                    cityApp.displayCityScores(cityObjectOne, 0);
+                    cityApp.displayCityScores(cityObjectTwo, 1);
 
                     cityApp.scrollToResults();
                 })
@@ -123,7 +123,7 @@ cityApp.getCityImage = function (cityNameOne, cityNameTwo) {
 
 
 // (8) display city scores (a method that displays the scores, icons, and category labels on the user's screen)
-cityApp.displayCityInfo = (cityObject, i) => {
+cityApp.displayCityScores = (cityObject, i) => {
 
     // add border & height to dynamic results
     $results.addClass('results-dynamic');
