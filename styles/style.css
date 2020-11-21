@@ -548,7 +548,6 @@ footer a {
   opacity: 0.6;
 }
 
-/* MINOR BREAKPOINT 1: large desktops */
 /* MAJOR BREAKPOINT 1: small desktop & portrait tablet */
 @media (max-width: 940px) {
   .results-container {

@@ -48,9 +48,9 @@ cityApp.formSubmitEventListener = () => {
 }
 
 
-// (6) AJAX city scores (a method that ensures the user's inputted city is available in the API & calls the display function if the API returns all city objects successfully)
+// (6) AJAX call for city scores (a method that ensures the user's inputted city is available in the API & calls the display function if the API returns all city objects successfully)
 cityApp.getCityScores = (userCityOne, userCityTwo) => {
-    // AJAX call for city one
+    // AJAX call for first city
     $.ajax({
         url: `https://api.teleport.org/api/urban_areas/slug:${userCityOne}/scores/`,
         method: `GET`,
@@ -86,9 +86,9 @@ cityApp.getCityScores = (userCityOne, userCityTwo) => {
 }
 
 
-// (7) AJAX city image (a method that calls the API which returns an object containing the city image & name)
+// (7) AJAX call for city image & name (a method that calls the API which returns an object containing the city image & name)
 cityApp.getCityImage = function (cityNameOne, cityNameTwo) {
-    // AJAX call for city one image & name
+    // AJAX call for first city image & name
     $.ajax({
         url: `https://api.teleport.org/api/urban_areas/slug:${cityNameOne}/images/`,
         method: `GET`,
@@ -96,9 +96,9 @@ cityApp.getCityImage = function (cityNameOne, cityNameTwo) {
     })
         .then((cityImageObject) => {
             cityApp.displayCityImage(cityImageObject, 0, cityNameOne);
-        })
+        });
 
-    // AJAX call for city two image & name
+    // AJAX call for second city image & name
     $.ajax({
         url: `https://api.teleport.org/api/urban_areas/slug:${cityNameTwo}/images/`,
         method: `GET`,
@@ -106,7 +106,7 @@ cityApp.getCityImage = function (cityNameOne, cityNameTwo) {
     })
         .then((cityImageObject) => {
             cityApp.displayCityImage(cityImageObject, 1, cityNameTwo);
-        })
+        });
 }
 
 
@@ -122,24 +122,25 @@ cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
     const cityTwoScoreTotalRaw = cityObjectTwo.teleport_city_score;
     const cityTwoScoreTotalFinal = cityTwoScoreTotalRaw.toFixed(1);
     
-    // display city total score values and category heading title both lists 
+    // display city total score heading/values and city score headings
     $totalScoreTitle.text(`Total Score`);
     $cityOneTotalScore.text(`${cityOneScoreTotalFinal} / 100`);
     $cityOneScoresHeading.text(`Score out of 10`);
     $cityTwoTotalScore.text(`${cityTwoScoreTotalFinal} / 100`);
     $cityTwoScoresHeading.text(`Score out of 10`);
 
-    // setup a for loop to track of each city object and append the appropriate content to the right lists
+    // a for loop to track each city object and append the appropriate content to the right lists
     for (let i = 0; i <= 1; i++) {
-    
+
+        // if the index is 0, then it's the first city object
         if (i === 0) {
 
             cityOneScoresArray.map((cityScore) => {
-
                 // round all score values to 1 decimal place
                 const scoreValueRaw = cityScore.score_out_of_10;
                 const scoreValueFinal = scoreValueRaw.toFixed(1);
 
+                // append city scores
                 $cityOneScores.append(`<li><span class="sr-only dynamic-category-titles">${cityScore.name} <br></span>${scoreValueFinal}</li>`);
                 $scoreCategoryTitles.append(`<li>${cityScore.name}</li>`);
 
@@ -150,17 +151,18 @@ cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
                 else {
                     $('.dynamic-category-titles').addClass('sr-only');
                 }
-            })
+            });
         }
 
+        // if the index is 1, then it's the second city object
         if (i === 1) {
 
             cityTwoScoresArray.map((cityScore) => {
-
                 // round all score values to 1 decimal place
                 const scoreValueRaw = cityScore.score_out_of_10;
                 const scoreValueFinal = scoreValueRaw.toFixed(1);
 
+                // append city scores
                 $cityTwoScores.append(`<li><span class="sr-only dynamic-category-titles">${cityScore.name} <br></span>${scoreValueFinal}</li>`);
 
                 // alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
@@ -170,7 +172,7 @@ cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
                 else {
                     $('.dynamic-category-titles').addClass('sr-only');
                 }
-            })
+            });
         }
     }
 
@@ -188,55 +190,62 @@ cityApp.displayCityScores = (cityObjectOne, cityObjectTwo) => {
 }
 
 
-// style scores (a method that compares the category scores for each city and dynamically changes the color to green (higher score), red (lower score), or purple (equal scores))
+// (9) display city name and photo (a method that displays the city name and image on the user's screen)
+cityApp.displayCityImage = (cityObject, i, cityName) => {
+    const cityImage = cityObject.photos[0].image.mobile;
+
+    // replace city names with hyphens with an empty space
+    const correctedCityName = $.trim(cityName.replace(/-/g, ' '));
+
+    // a conditional that appends the name & image for city 1 and city 2 in separate divs
+    if (i === 0) {
+        const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
+        $cityOneImageContainer.append(cityOneImage);
+        $cityOneName.text(correctedCityName);
+
+    }
+    else {
+        const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
+        $cityTwoImageContainer.append(cityTwoImage);
+        $cityTwoName.text(correctedCityName);
+    }
+}
+
+
+// (10) style scores (a method that compares the category scores for each city and dynamically changes the color to green (higher score), red (lower score), or purple (equal scores))
 cityApp.styleScores = (cityOneScoresArray, cityTwoScoresArray, cityOneScoreTotalFinal, cityTwoScoreTotalFinal) => {
-    // STYLE the total city score values
+    // style the TOTAL city score values
     if (cityOneScoreTotalFinal > cityTwoScoreTotalFinal) {
         $cityOneTotalScore.css({ color: 'green'});
-
         $cityTwoTotalScore.css({ color: 'red'});
-
-        // $cityOneTotalScore.css({background: 'green', color: 'white'});
-        // $cityTwoTotalScore.css({ background: 'red', color: 'white'});
     }
     else if (cityOneScoreTotalFinal < cityTwoScoreTotalFinal) {
         $cityOneTotalScore.css({ color: 'red'});
-
         $cityTwoTotalScore.css({ color: 'green'});
-
-        // $cityOneTotalScore.css({ background: 'red', color: 'white'});
-        // $cityTwoTotalScore.css({ background: 'green', color: 'white' });
     }
     else {
         $cityOneTotalScore.css({ color: 'purple'});
         $cityTwoTotalScore.css({ color: 'purple'});
     }
 
-    // STYLE the individual scores from all 17 categories  
+    // style the INDIVIDUAL scores from all 17 categories  
     for (let i = 0; i <= 16; i++) {
 
         if (cityOneScoresArray[i].score_out_of_10 > cityTwoScoresArray[i].score_out_of_10) {
-
             const $cityOneScoreList = $(`#results-list-city-one > li:nth-child(${i + 1})`);
             $cityOneScoreList.css({ color: 'green' });
-
             const $cityTwoScoreList = $(`#results-list-city-two > li:nth-child(${i + 1})`);
             $cityTwoScoreList.css({ color: 'red' });
         }
-
         else if (cityOneScoresArray[i].score_out_of_10 < cityTwoScoresArray[i].score_out_of_10) {
-
             const $cityOneScoreList = $(`#results-list-city-one > li:nth-child(${i + 1})`);
             $cityOneScoreList.css({ color: 'red' });
-
             const $cityTwoScoreList = $(`#results-list-city-two > li:nth-child(${i + 1})`);
             $cityTwoScoreList.css({ color: 'green' });
         }
         else {
-            // give a neutral color of purple if both score values are the same!
             const $cityOneScoreList = $(`#results-list-city-one > li:nth-child(${i + 1})`);
             $cityOneScoreList.css({ color: 'purple' });
-
             const $cityTwoScoreList = $(`#results-list-city-two > li:nth-child(${i + 1})`);
             $cityTwoScoreList.css({ color: 'purple' });
         }
@@ -244,7 +253,7 @@ cityApp.styleScores = (cityOneScoresArray, cityTwoScoresArray, cityOneScoreTotal
 }
 
 
-// (9) resize results (a method that alters how results are printed based on screen width (at 480px, print category titles in the same list as the category scores))
+// (11) resize results (a method that alters how results appear based on screen width (at 480px, print category titles in the same list as the category scores))
 cityApp.resizeResults = () => {
     $(window).on("resize", () => {
         if ($(window).width() <= 480) {
@@ -257,29 +266,7 @@ cityApp.resizeResults = () => {
 }
 
 
-// (10) display city name and photo (a method that displays the city name and image on the user's screen)
-cityApp.displayCityImage = (cityObject, i, cityName) => {
-    const cityImage = cityObject.photos[0].image.mobile;
-
-    // replace city names with hyphens with an empty space
-    const correctedCityName = $.trim(cityName.replace(/-/g, ' '));
-
-    // a conditional that appends the name & image for city 1 and city 2 in separate divs
-    if (i === 0) {
-        const cityOneImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
-        $cityOneImageContainer.append(cityOneImage);
-        $cityOneName.text(correctedCityName);
-        
-    }
-    else {
-        const cityTwoImage = $('<img>').attr("src", `${cityImage}`).attr("alt", `A photo of ${correctedCityName}`).css({ margin: '0 0 15px 0' });
-        $cityTwoImageContainer.append(cityTwoImage);
-        $cityTwoName.text(correctedCityName);
-    }
-}
-
-
-// (11) scroll function (a method to automatically bring users to results)
+// (12) scroll function (a method to automatically bring users to results)
 cityApp.scrollToResults = () => {
     $('html').animate({
         scrollTop: $results.offset().top
@@ -287,7 +274,7 @@ cityApp.scrollToResults = () => {
 }
 
 
-// (12) choose different cities (a method that removes appended content, scrolls to the top of the page, and allows users to search again)
+// (13) choose different cities (a method that removes appended content, scrolls to the top of the page, and allows users to search again)
 cityApp.chooseDifferentCities = () => {
     // listen for when the user clicks the 'compare different cities' button
     $('#choose-different-cities').on('click', function () {
@@ -301,7 +288,7 @@ cityApp.chooseDifferentCities = () => {
 }
 
 
-// (13) reset (a method that clears all appended content in the results section)
+// (14) reset (a method that clears all appended content in the results section)
 cityApp.reset = () => {
     // remove all appended content
     $results.removeClass('results-dynamic');
