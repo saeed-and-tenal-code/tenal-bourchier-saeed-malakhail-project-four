@@ -121,10 +121,10 @@ cityApp.displayCityInfo = (cityObject, i) => {
     $('#results-container').addClass('results-container-dynamic');
 
     const cityScoresArray = cityObject.categories;
-    let cityOneTotalScore = 0;
-    let cityTwoTotalScore = 0;
-    let cityOneScoresArray = [];
-    let cityTwoScoresArray = [];
+    // let cityOneTotalScore = 0;
+    // let cityTwoTotalScore = 0;
+    // let cityOneScoresArray = [];
+    // let cityTwoScoresArray = [];
 
     cityScoresArray.map((cityScore) => {
 
@@ -138,30 +138,13 @@ cityApp.displayCityInfo = (cityObject, i) => {
         if (i === 0) {
             $('#total-score-city-one').text(`Total Score: ${scoreTotalFinal} / 100`);
             $('#scores-heading-city-one').text(`Score out of 10`);
+            $('#results-list-city-one').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
             $('#results-list-category-titles').append(`<li>${cityScore.name}</li>`);
-
-            // alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
-            if ($(window).width() > 480) {
-                $('#results-list-city-one').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
-                $('#category-titles').text(`Category Titles`); 
-            }
-            else {
-                $('#results-list-city-one').append(`<li>${cityScore.name}:<br>${scoreValueFinal}</li>`);
-            }
-
         }
         else {
             $('#scores-heading-city-two').text(`Score out of 10`);
             $('#total-score-city-two').text(`Total Score: ${scoreTotalFinal} / 100`);
-
-            // alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
-            if ($(window).width() > 480) {
-                $('#results-list-city-one').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
-                $('#category-titles').text(`Category Titles`);
-            }
-            else {
-                $('#results-list-city-one').append(`<li>${cityScore.name}:<br>${scoreValueFinal}</li>`);
-            }
+            $('#results-list-city-two').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
 
             // highlight the winner city function
             // cityTwoTotalScore = scoreTotalFinal;
@@ -189,6 +172,24 @@ cityApp.displayCityInfo = (cityObject, i) => {
     // cityApp.highlightWinner(cityOneTotalScore, cityTwoTotalScore, cityOneScoresArray, cityTwoScoresArray);
     
 }
+
+
+
+// alter how results are printed based on screen width (at 480px, print category titles in the same list as the category scores)
+cityApp.resizeResults = () => {
+    // REVIEW: i just moved this from the function above because it only worked on the initial printing of results and wouldn't change when the screen was resized after the fact... I will continue to play around with this after my appointment (after 3pm). Ill have to add/remove classes and call this fucntion in the above function somehow so the city scores are shown/hidden dynamically (might have to put inside an event listener: $(window).on("resize", resize); then call?)
+    
+    if ($(window).width() < 480) {
+        $('#results-list-city-one').append(`<li>${cityScore.name}<br>${scoreValueFinal}</li>`);
+        $('#results-list-city-two').append(`<li>${cityScore.name}<br>${scoreValueFinal}</li>`);
+    }
+    else {
+        $('#results-list-city-one').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+        $('#results-list-city-two').append(`<li><span class="sr-only">score for ${cityScore.name}</span>${scoreValueFinal}</li>`);
+    }
+}
+
+
 
 // cityApp.highlightWinner = (cityOneTotalScore, cityTwoTotalScore, cityOneScoresArray, cityTwoScoresArray) => {
 

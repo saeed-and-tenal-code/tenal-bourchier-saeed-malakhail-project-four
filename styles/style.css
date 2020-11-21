@@ -252,7 +252,7 @@ html {
 }
 
 body {
-  background-color: white;
+  background-color: #FEBE66;
 }
 
 body, html {
@@ -307,17 +307,17 @@ header .header-container {
 header .header-container h1 {
   font-size: 8rem;
   text-transform: uppercase;
-  color: white;
-  text-shadow: 0 0 5px black;
+  color: #FFFFFF;
+  text-shadow: 0 0 5px #000000;
   margin: 50px 0 110px 0;
   text-align: center;
 }
 
 .form-container {
   background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid black;
-  -webkit-box-shadow: 0 0 15px black;
-          box-shadow: 0 0 15px black;
+  border: 1px solid #000000;
+  -webkit-box-shadow: 0 0 15px #000000;
+          box-shadow: 0 0 15px #000000;
   width: 500px;
   min-height: 200px;
   margin-bottom: 100px;
@@ -377,23 +377,22 @@ form input::placeholder {
 form button {
   border: none;
   background-color: #FC9730;
-  width: 125px;
+  width: 130px;
   padding: 10px;
-  -webkit-box-shadow: 0 2px 7px black;
-          box-shadow: 0 2px 7px black;
+  margin-bottom: 10px;
+  -webkit-box-shadow: 0 2px 7px #000000;
+          box-shadow: 0 2px 7px #000000;
   text-transform: uppercase;
-  font-weight: bold;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 
 form button:hover, form button:focus, form button:active {
-  background-color: black;
-  color: white;
+  background-color: #000000;
+  color: #FFFFFF;
   cursor: pointer;
 }
 
-/* Underline Reveal */
 .results {
   display: none;
 }
@@ -413,7 +412,6 @@ form button:hover, form button:focus, form button:active {
 
 .results-container div.results-list {
   text-align: center;
-  border: 1px solid red;
 }
 
 .results-container div.results-list h2 {
@@ -447,13 +445,13 @@ form button:hover, form button:focus, form button:active {
 
 .different-cities-button {
   border: none;
-  background-color: black;
-  color: white;
+  background-color: #000000;
+  color: #FFFFFF;
   font-size: 1.7rem;
   margin-bottom: 50px;
   padding: 10px 15px;
-  -webkit-box-shadow: 0 2px 7px black;
-          box-shadow: 0 2px 7px black;
+  -webkit-box-shadow: 0 2px 7px #000000;
+          box-shadow: 0 2px 7px #000000;
   text-transform: uppercase;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
@@ -461,7 +459,7 @@ form button:hover, form button:focus, form button:active {
 
 .different-cities-button:hover, .different-cities-button:focus, .different-cities-button:active {
   background-color: #FC9730;
-  color: black;
+  color: #000000;
   cursor: pointer;
 }
 
@@ -483,12 +481,39 @@ form button:hover, form button:focus, form button:active {
 .results-container-dynamic {
   margin: 50px 0 25px 0;
   border: 5px solid transparent;
-  -o-border-image: linear-gradient(black, #f1efef);
-     border-image: -webkit-gradient(linear, left top, left bottom, from(black), to(#f1efef));
-     border-image: linear-gradient(black, #f1efef);
+  -o-border-image: linear-gradient(#000000, #f1efef);
+     border-image: -webkit-gradient(linear, left top, left bottom, from(#000000), to(#f1efef));
+     border-image: linear-gradient(#000000, #f1efef);
   border-image-slice: 100%;
   border-image-slice: 1;
   background-color: rgba(255, 255, 255, 0.5);
+}
+
+footer {
+  min-height: 5vh;
+  background-color: #000000;
+  padding: 10px 0;
+  text-align: center;
+  color: #FFFFFF;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+footer p {
+  font-size: 1.7rem;
+  opacity: 0.7;
+}
+
+footer a {
+  font-style: italic;
+  opacity: 0.6;
 }
 
 /* MINOR BREAKPOINT 1: large desktops */
@@ -553,42 +578,18 @@ form button:hover, form button:focus, form button:active {
     margin-bottom: 20px;
   }
   .results-container {
-    padding: 25px 20px;
+    padding: 25px 10px;
   }
   .results-container div.category-titles {
     display: none;
   }
   .results-container div.category-scores {
-    width: 50%;
+    width: calc(100% / 2 - 10px);
+  }
+  .results-container div.category-scores:first-of-type {
+    margin-right: 10px;
   }
   footer div p {
     font-size: 1.2rem;
   }
-}
-
-footer {
-  min-height: 5vh;
-  background-color: black;
-  padding: 10px 0;
-  text-align: center;
-  color: white;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-footer p {
-  font-size: 1.7rem;
-  opacity: 0.7;
-}
-
-footer a {
-  font-style: italic;
-  opacity: 0.6;
 }

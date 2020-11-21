@@ -1,9 +1,8 @@
 // COLOUR VARIABLES ----------
-    // $primary-colour: #ABC5D2;
-    // $secondary-colour: #7397AF;
-    // $option: #e9bd5f;
-    // $option-active: #DA972F;
-    // $font-colour: #000000;
+    $primary-colour: #FC9730;
+    $secondary-colour: #FEBE66;
+    $font-primary: #000000;
+    $font-secondary: #FFFFFF;
 
 
 // FONT VARIABLES ----------
@@ -29,7 +28,7 @@ html {
 }
 
 body {
-    background-color: white;
+    background-color: $secondary-colour;
 }
 
 body, html { 

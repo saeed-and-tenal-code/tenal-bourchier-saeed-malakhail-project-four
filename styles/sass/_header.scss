@@ -14,8 +14,8 @@ header {
                 h1 {
                     font-size: 8rem;
                     text-transform: uppercase;
-                    color: white;
-                    text-shadow: 0 0 5px black;
+                    color: $font-secondary;
+                    text-shadow: 0 0 5px $font-primary;
                     margin: 50px 0 110px 0;
                     text-align: center;
                 }
@@ -25,8 +25,8 @@ header {
 // form styling
 .form-container {
     background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid black;
-    box-shadow: 0 0 15px black;
+    border: 1px solid $font-primary;
+    box-shadow: 0 0 15px $font-primary;
     width: 500px;
     min-height: 200px;
     margin-bottom: 100px;
@@ -56,53 +56,19 @@ form {
         }
         button {
             border: none;
-            background-color: #FC9730;
-            width: 125px;
+            background-color: $primary-colour;
+            width: 130px;
             padding: 10px;
-            box-shadow: 0 2px 7px black;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 7px $font-primary;
             text-transform: uppercase;
-            font-weight: bold;
             transition: all 0.3s ease;
                 &:hover,
                 &:focus,
                 &:active {
-                    background-color: black;
-                    color: white;
+                    background-color: $font-primary;
+                    color: $font-secondary;
                     cursor: pointer;
                 }
         }
 }
-
-// input hover styling
-/* Underline Reveal */ // add to inputs class="hvr-underline-reveal"
-// @mixin underline-reveal {
-// 	$duration: $mediumDuration;
-
-// 	@include hacks();
-// 	position: relative;
-// 	overflow: hidden;
-
-// 	&:before {
-// 		content: "";
-// 		position: absolute;
-// 		z-index: -1;
-// 		left: 0;
-// 		right: 0;
-// 		bottom: 0;
-// 		background: $activeColor;
-// 		height: 4px;
-// 		@include prefixed(transform, translateY(4px));
-// 		@include prefixed(transition-property, transform);
-// 		@include prefixed(transition-duration, $duration);
-// 		@include prefixed(transition-timing-function, ease-out);
-// 	}
-
-// 	&:hover,
-// 	&:focus,
-// 	&:active {
-
-// 		&:before {
-// 			@include prefixed(transform, translateY(0));
-// 		}
-// 	}
-// }

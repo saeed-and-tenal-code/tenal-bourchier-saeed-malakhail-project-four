@@ -10,7 +10,6 @@
     padding: 25px 50px;
         div.results-list {
             text-align: center;
-            border: 1px solid red;
                 h2 {
                     font-size: 3rem;
                     text-transform: uppercase;
@@ -40,20 +39,19 @@
 // results button styling (change this to class & add class on with JS)
 .different-cities-button {
     border: none;
-    background-color: black;
-    color: white;
+    background-color: $font-primary;
+    color: $font-secondary;
     font-size: 1.7rem;
     margin-bottom: 50px;
     padding: 10px 15px;
-    box-shadow: 0 2px 7px black;
+    box-shadow: 0 2px 7px $font-primary;
     text-transform: uppercase;
-    // font-weight: bold;
     transition: all 0.3s ease;
         &:hover,
         &:focus,
         &:active {
-            background-color: #FC9730;
-            color: black;
+            background-color: $primary-colour;
+            color: $font-primary;
             cursor: pointer;
         }
 }
@@ -63,16 +61,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(#FC9730, #FEBE66);
+    background: linear-gradient($primary-colour, $secondary-colour);
 }
 
 .results-container-dynamic {
-    // padding: 25px 50px;
     margin: 50px 0 25px 0;
     border: 5px solid transparent;
-    border-image: linear-gradient(black, rgb(241, 239, 239));
+    border-image: linear-gradient($font-primary, rgb(241, 239, 239));
     border-image-slice: 100%;
     border-image-slice: 1;
     background-color: rgba(255, 255, 255, 0.5);
-    // min-height: 100vh;
 }
